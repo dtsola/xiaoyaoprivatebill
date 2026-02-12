@@ -1,0 +1,88 @@
+# 依赖目录
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 构建输出
+dist/
+build/
+release/
+
+# 数据目录（包含敏感数据）
+data/database/
+data/indexes/
+data/configs/
+data/test-data/
+data/uploads/
+
+# AI模型文件（体积大）
+data/models/cn-clip
+data/models/embedding
+data/models/faster-whisper
+
+
+# 日志文件
+*.log
+logs/
+
+# IDE和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+temp/
+tmp/
+*.tmp
+
+# 环境配置文件
+.env
+.env.local
+.env.production
+
+# 包管理器
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 测试覆盖率
+coverage/
+.coverage
+.nyc_output/
+
+# Python
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytest_cache/
+
+# Electron
+out/
+app/dist/
+
+# palywright
+.palywright-mcp
+
+# 测试文件目录
+test-dir/
+
+# 发布版应用
+release/
+
+# 临时文档
+**/项目提示词.md
+docs/base/
+
+# 整合包运行时
+runtime/
+runtime_backup/
+
