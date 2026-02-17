@@ -44,6 +44,12 @@ export const api = {
   getTimeAnalysis: (params) => get('/time_analysis', params),
 
   /**
+   * 获取每日数据（用于热力图）
+   * @param {Object} params - 查询参数 { year, filter }
+   */
+  getDailyData: (params) => get('/daily_data', params),
+
+  /**
    * 获取汇总数据
    */
   getSummary: () => get('/summary'),
