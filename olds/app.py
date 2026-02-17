@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for, send_from_directory
 import pandas as pd
 from datetime import datetime, timedelta
 from functools import lru_cache, wraps
@@ -17,6 +17,22 @@ from secrets import token_hex
 import itertools
 
 app = Flask(__name__)
+
+# 注册新前端路由
+def register_new_frontend_routes():
+    """注册新前端静态资源路由"""
+    @app.route('/assets/<path:filename>')
+    def serve_new_frontend_assets(filename):
+        if os.environ.get('NEW_FRONTEND') == '1':
+            frontend_dist = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'frontend', 'dist')
+            assets_dir = os.path.join(frontend_dist, 'assets')
+            if os.path.exists(os.path.join(assets_dir, filename)):
+                return send_from_directory(assets_dir, filename)
+        from flask import abort
+        abort(404)
+
+# 立即注册新前端路由
+register_new_frontend_routes()
 
 # 在 app 配置后添加
 app.config.update(
@@ -365,7 +381,28 @@ def check_data_exists(f):
 @app.route('/')
 @app.route('/index')
 def index():
+    # 检查是否启用新前端模式
+    if os.environ.get('NEW_FRONTEND') == '1':
+        frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
+        if os.path.exists(frontend_dist):
+            return send_from_directory(frontend_dist, 'index.html')
+    # 否则使用原有模板
     return render_template('index.html', active_page='index')
+
+
+# 新前端静态资源服务 (仅在新前端模式下生效)
+# 注意: 此路由需要在所有 API 路由之前注册
+def register_new_frontend_routes(app):
+    """注册新前端相关的路由"""
+    @app.route('/assets/<path:filename>')
+    def serve_new_frontend_assets(filename):
+        if os.environ.get('NEW_FRONTEND') == '1':
+            frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
+            assets_dir = os.path.join(frontend_dist, 'assets')
+            if os.path.exists(assets_dir):
+                return send_from_directory(assets_dir, filename)
+        # 如果不是新前端模式，返回 404
+        return None, 404
 
 @app.route('/yearly')
 @check_data_exists

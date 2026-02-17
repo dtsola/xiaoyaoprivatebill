@@ -5,24 +5,6 @@ __pycache__/
 .venv/
 venv/
 
-# 构建输出
-dist/
-build/
-release/
-
-# 数据目录（包含敏感数据）
-data/database/
-data/indexes/
-data/configs/
-data/test-data/
-data/uploads/
-
-# AI模型文件（体积大）
-data/models/cn-clip
-data/models/embedding
-data/models/faster-whisper
-
-
 # 日志文件
 *.log
 logs/
@@ -44,11 +26,6 @@ temp/
 tmp/
 *.tmp
 
-# 环境配置文件
-.env
-.env.local
-.env.production
-
 # 包管理器
 npm-debug.log*
 yarn-debug.log*
@@ -65,15 +42,11 @@ coverage/
 dmypy.json
 .pytest_cache/
 
-# Electron
-out/
-app/dist/
-
 # palywright
 .palywright-mcp
 
 # 测试文件目录
-test-dir/
+olds
 
 # 发布版应用
 release/

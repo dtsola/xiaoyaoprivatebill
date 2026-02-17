@@ -1,6 +1,7 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+    ],
     "deny": [],
     "ask": []
   }
