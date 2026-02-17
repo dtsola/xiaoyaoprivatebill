@@ -1,0 +1,59 @@
+# Docker Compose 配置
+# 用于一键启动小遥私人账单分析助手
+
+version: '3.8'
+
+services:
+  # 后端服务
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: xiaoyao-backend
+    restart: unless-stopped
+    environment:
+      - APP_NAME=小遥私人账单分析助手
+      - APP_ENV=production
+      - DEBUG=False
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - SESSION_LIFETIME=1800
+      - MAX_CONTENT_LENGTH=16777216
+      - UPLOAD_FOLDER=/app/data
+    volumes:
+      - backend-data:/app/data
+    networks:
+      - xiaoyao-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # 前端服务
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: xiaoyao-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - xiaoyao-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  backend-data:
+    driver: local
+
+networks:
+  xiaoyao-network:
+    driver: bridge
