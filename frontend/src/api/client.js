@@ -64,6 +64,17 @@ export const api = {
    */
   getCategories: () => get('/categories'),
 
+  /**
+   * 获取分类分析数据（带参数时获取具体分类数据，不带参数时获取分类列表）
+   * @param {Object} params - 查询参数 { category, range, year, month, min_amount, max_amount }
+   */
+  getCategoryAnalysis: (params) => get('/category_analysis', params),
+
+  /**
+   * 获取分类分析的可用日期
+   */
+  getCategoryAvailableDates: () => get('/category_available_dates'),
+
   // ==================== 文件管理 API ====================
   /**
    * 上传文件
@@ -133,7 +144,9 @@ async function get(endpoint, params) {
 
   console.log('[API] Response:', data)
 
-  if (!data.success) {
+  // 只在 success 字段存在且为 false 时才抛出错误
+  // 有些端点（如 category_available_dates）不返回 success 字段
+  if ('success' in data && !data.success) {
     throw new Error(data.error || '请求失败')
   }
 
@@ -165,7 +178,8 @@ async function post(endpoint, data) {
 
   const result = await response.json()
 
-  if (!result.success) {
+  // 只在 success 字段存在且为 false 时才抛出错误
+  if ('success' in result && !result.success) {
     throw new Error(result.error || '请求失败')
   }
 
@@ -190,7 +204,8 @@ async function delete_(endpoint) {
 
   const data = await response.json()
 
-  if (!data.success) {
+  // 只在 success 字段存在且为 false 时才抛出错误
+  if ('success' in data && !data.success) {
     throw new Error(data.error || '请求失败')
   }
 
