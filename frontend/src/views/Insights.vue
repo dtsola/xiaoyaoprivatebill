@@ -30,7 +30,7 @@
         </div>
 
         <!-- 年度故事 -->
-        <div class="analysis-card story-entry-card" @click="showStoryMode = true">
+        <div class="analysis-card story-entry-card" @click="showStoryModeFunc">
           <div class="story-card-content">
             <div class="story-icon">
               <i class="fas fa-film"></i>
@@ -401,20 +401,40 @@ function updateIndicators() {
 // 故事模式相关
 let totalSlides = 0
 
-function showStoryModeFunc() {
+async function showStoryModeFunc() {
+  const data = storyData.value
+  if (!data) {
+    console.warn('[Story] No story data available')
+    return
+  }
+
   currentSlide.value = 0
-  generateStorySlides()
   showStoryMode.value = true
+
+  // 等待 DOM 更新后再生成幻灯片
+  await nextTick()
+  generateStorySlides()
 }
 
 function generateStorySlides() {
   const data = storyData.value
-  if (!data) return
+  console.log('[Story] generateStorySlides called, data:', data)
+
+  if (!data) {
+    console.warn('[Story] No data available')
+    return
+  }
 
   const slides = storySlides.value
   const indicators = storyIndicators.value
 
-  if (!slides || !indicators) return
+  console.log('[Story] slides element:', slides)
+  console.log('[Story] indicators element:', indicators)
+
+  if (!slides || !indicators) {
+    console.warn('[Story] DOM elements not found')
+    return
+  }
 
   // 生成幻灯片（与老前端保持一致的模板）
   const slideTemplates = [
@@ -1770,10 +1790,10 @@ onUnmounted(() => {
 
 /* 顶部区域 */
 .top-analysis-section {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  height: 500px;
 }
 
 .analysis-card {
@@ -1800,11 +1820,17 @@ onUnmounted(() => {
 
 /* 桑基图卡片 */
 .sankey-card {
-  min-height: 400px;
+  flex: 1;
+  height: 100%;
+  margin-bottom: 0 !important;
 }
 
 /* 年度故事卡片 */
 .story-entry-card {
+  width: 280px;
+  flex-shrink: 0;
+  height: 100%;
+  margin-bottom: 0 !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2233,7 +2259,7 @@ onUnmounted(() => {
   transform: rotate(90deg);
 }
 
-.slides {
+.story-slides {
   flex: 1;
   position: relative;
   overflow: hidden;
@@ -2338,27 +2364,29 @@ onUnmounted(() => {
 }
 
 .story-controls {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
+  padding: 20px 0;
 }
 
-.story-btn {
+/* 翻页按钮样式 - 使用更具体的选择器避免覆盖卡片中的按钮 */
+.story-controls .story-btn {
   background: none;
   border: none;
-  color: white;
+  color: white !important;
   font-size: 24px;
   cursor: pointer;
   opacity: 0.7;
   transition: opacity 0.2s;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.story-btn:hover {
+.story-controls .story-btn:hover {
   opacity: 1;
 }
 
@@ -2436,7 +2464,17 @@ onUnmounted(() => {
 
 @media (max-width: 1200px) {
   .top-analysis-section {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sankey-card {
+    height: 400px;
+  }
+
+  .story-entry-card {
+    width: 100%;
+    height: 200px;
   }
 
   .core-analysis-grid {
