@@ -18,7 +18,7 @@
 ## 简介
 
 <p align="center">
-  <img src="docs/产品文档/logos/小遥账单助手.png" alt="小遥账单助手" width="200">
+  <img src="docs/产品文档/logos/logo.png" alt="小遥账单助手" width="200">
 </p>
 
 小遥账单助手是一个**隐私优先**的个人账单分析工具，支持支付宝和微信账单的自动解析和多维度数据可视化分析。

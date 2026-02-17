@@ -12,7 +12,7 @@
     <!-- 侧边栏 -->
     <aside class="sidebar">
       <div class="logo">
-        <i class="fas fa-wallet"></i>
+        <img src="/images/logo_128.png" alt="小遥账单助手" class="logo-icon" />
         <span>账单分析</span>
       </div>
       <nav class="nav-menu">
@@ -171,9 +171,11 @@ onMounted(async () => {
   color: var(--text-color);
 }
 
-.logo i {
+.logo-icon {
+  width: 64px;
+  height: 64px;
   margin-right: 12px;
-  color: var(--primary-color);
+  object-fit: contain;
 }
 
 .nav-menu {

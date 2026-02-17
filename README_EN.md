@@ -18,7 +18,7 @@ English | [简体中文](README.md)
 ## Introduction
 
 <p align="center">
-  <img src="docs/产品文档/logos/小遥账单助手.png" alt="Xiaoyao Bill Assistant" width="200">
+  <img src="docs/产品文档/logos/logo.png" alt="Xiaoyao Bill Assistant" width="200">
 </p>
 
 Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool that supports automatic parsing and multi-dimensional data visualization for Alipay and WeChat bills.
