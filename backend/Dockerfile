@@ -21,8 +21,8 @@ RUN apt-get update && \
 # 复制依赖文件
 COPY requirements.txt .
 
-# 安装 Python 依赖
-RUN pip install --no-cache-dir -r requirements.txt
+# 使用阿里云镜像安装 Python 依赖
+RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ -r requirements.txt
 
 # 复制项目文件
 COPY . .
@@ -33,9 +33,9 @@ RUN mkdir -p /app/data
 # 暴露端口
 EXPOSE 5000
 
-# 健康检查
+# 健康检查（使用 socket 检查端口是否可用）
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:5000/api/health')" || exit 1
+    CMD python -c "import socket; s = socket.socket(); s.connect(('localhost', 5000)); s.close()" || exit 1
 
 # 启动应用
 CMD ["python", "app.py"]

@@ -9,8 +9,9 @@ WORKDIR /app
 # 复制 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 安装所有依赖（构建需要 vite 等 devDependencies）
-RUN npm ci
+# 配置 npm 使用阿里云镜像并安装所有依赖
+RUN npm config set registry https://registry.npmmirror.com && \
+    npm ci
 
 # 复制项目文件
 COPY . .
