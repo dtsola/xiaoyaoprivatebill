@@ -177,10 +177,12 @@
 
 ### 方式一：Docker 一键安装（推荐给普通用户）
 
-#### 前置要求
+#### 环境准备
 
-- Docker 20.10+
-- Docker Compose 2.0+
+安装 Docker Desktop（已包含 Docker Compose）：
+- Windows：https://docs.docker.com/desktop/setup/install/windows-install/
+- Mac：https://docs.docker.com/desktop/setup/install/mac-install/
+- Linux：https://docs.docker.com/desktop/setup/install/linux/
 
 #### 启动步骤
 

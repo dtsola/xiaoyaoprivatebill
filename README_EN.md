@@ -177,10 +177,12 @@ Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool
 
 ### Option 1: Docker One-Click Installation (Recommended for Users)
 
-#### Prerequisites
+#### Environment Setup
 
-- Docker 20.10+
-- Docker Compose 2.0+
+Install Docker Desktop (includes Docker Compose):
+- Windows: https://docs.docker.com/desktop/setup/install/windows-install/
+- Mac: https://docs.docker.com/desktop/setup/install/mac-install/
+- Linux: https://docs.docker.com/desktop/setup/install/linux/
 
 #### Start Steps
 
