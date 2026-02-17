@@ -12,7 +12,7 @@
               <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
           </div>
-          <div class="category-expanded" v-show="categoryExpanded">
+          <div class="category-expanded" v-show="categoryExpanded" @click.stop>
             <div class="category-pills">
               <!-- 支付宝分类 -->
               <template v-if="categoryGroups.alipay && categoryGroups.alipay.length > 0">
@@ -25,7 +25,7 @@
                   :key="cat"
                   class="category-pill"
                   :class="{ active: cat === currentCategory }"
-                  @click="selectCategory(cat)"
+                  @click.stop="selectCategory(cat)"
                 >
                   <span class="icon" :style="{ backgroundColor: getCategoryColor(cat) }"></span>
                   <span>{{ cat }}</span>
@@ -43,7 +43,7 @@
                   :key="cat"
                   class="category-pill"
                   :class="{ active: cat === currentCategory }"
-                  @click="selectCategory(cat)"
+                  @click.stop="selectCategory(cat)"
                 >
                   <span class="icon" :style="{ backgroundColor: getCategoryColor(cat) }"></span>
                   <span>{{ cat }}</span>
@@ -793,6 +793,8 @@ onUnmounted(() => {
 /* 分类选择器 */
 .category-selector {
   position: relative;
+  padding: 0;
+  margin: 0;
 }
 
 .category-pill {
@@ -830,13 +832,15 @@ onUnmounted(() => {
 
 .category-expanded {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
+  margin-top: 0;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   box-shadow: var(--shadow-card);
   padding: 12px;
+  padding-top: 16px;
   z-index: 1000;
   min-width: 300px;
   max-height: 400px;
