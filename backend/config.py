@@ -36,7 +36,7 @@ LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 # ============ 应用配置 ============
 DEBUG = True
 HOST = '0.0.0.0'
-PORT = 8080
+PORT = 5000  # Flask 默认端口，与 Docker 配置保持一致
 
 # ============ 分类颜色映射 ============
 CATEGORY_COLORS = {

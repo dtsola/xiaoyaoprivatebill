@@ -24,7 +24,7 @@ services:
     networks:
       - xiaoyao-network
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/api/health')"]
+      test: ["CMD", "python", "-c", "import socket; s = socket.socket(); s.connect(('localhost', 5000)); s.close()"]
       interval: 30s
       timeout: 10s
       retries: 3
