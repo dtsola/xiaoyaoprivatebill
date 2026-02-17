@@ -51,7 +51,7 @@ cd xiaoyaoprivatebill
 docker-compose up -d
 
 # 3. 访问应用
-# 浏览器打开: http://localhost:8080
+# 浏览器打开: http://localhost:8888
 ```
 
 #### 常用命令
