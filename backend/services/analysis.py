@@ -414,40 +414,163 @@ def generate_smart_tags(df):
 
 
 def generate_story_data(df):
-    """生成故事化叙述数据"""
+    """生成年度账单故事数据 (增强版)"""
     expense_df = df[df['收/支'] == '支出'].copy()
 
-    total_expense = float(expense_df['金额'].sum())
-    transaction_count = len(expense_df)
-    avg_transaction = float(expense_df['金额'].mean())
+    if expense_df.empty:
+        return None
 
-    # 最常去的商家
-    top_merchant = expense_df.groupby('交易对方')['金额'].sum().idxmax()
-    top_merchant_amount = float(expense_df.groupby('交易对方')['金额'].sum().max())
+    # 1. 最贵的一天
+    daily_sum = expense_df.groupby(expense_df['交易时间'].dt.date)['金额'].sum()
+    max_day = daily_sum.idxmax()
+    max_day_amount = daily_sum.max()
 
-    # 最喜欢的分类
-    top_category = expense_df.groupby('交易分类')['金额'].sum().idxmax()
-    top_category_amount = float(expense_df.groupby('交易分类')['金额'].sum().max())
+    # 2. 消费最高的一个月
+    monthly_sum = expense_df.groupby(expense_df['交易时间'].dt.to_period('M'))['金额'].sum()
+    max_month = monthly_sum.idxmax()
+    max_month_amount = monthly_sum.max()
 
-    # 最忙碌的月份
-    monthly_count = expense_df.groupby('月份').size()
-    busiest_month = monthly_count.idxmax()
-    busiest_month_count = int(monthly_count.max())
+    # 3. 最晚的一笔消费
+    expense_df['time_only'] = expense_df['交易时间'].dt.time
+    late_night_df = expense_df[(expense_df['交易时间'].dt.hour >= 0) & (expense_df['交易时间'].dt.hour <= 4)]
+    if not late_night_df.empty:
+        latest_tx = late_night_df.sort_values('time_only', ascending=False).iloc[0]
+    else:
+        latest_tx = expense_df.sort_values('time_only', ascending=False).iloc[0]
 
-    # 单笔最大消费
-    max_transaction = expense_df.loc[expense_df['金额'].idxmax()]
+    # 4. 消费最多的分类
+    top_cat = expense_df.groupby('交易分类')['金额'].sum().idxmax()
+    top_cat_amount = expense_df.groupby('交易分类')['金额'].sum().max()
+
+    # 5. 全年总览
+    total_days = (expense_df['交易时间'].max() - expense_df['交易时间'].min()).days + 1
+    total_tx_count = len(expense_df)
+
+    # --- 新增：特色指数 ---
+
+    # [咖啡指数]
+    coffee_keywords = ['咖啡', 'luckin', 'starbucks', '瑞幸', '星巴克', 'manner', 'tim hortons', '皮爷']
+    coffee_df = expense_df[expense_df['商品说明'].str.contains('|'.join(coffee_keywords), case=False, na=False) |
+                           expense_df['交易对方'].str.contains('|'.join(coffee_keywords), case=False, na=False)]
+    coffee_count = len(coffee_df)
+    coffee_total = coffee_df['金额'].sum()
+
+    # [深夜哲学] (22:00 - 05:00)
+    night_philosophy_df = expense_df[(expense_df['交易时间'].dt.hour >= 22) | (expense_df['交易时间'].dt.hour <= 4)]
+    night_avg = night_philosophy_df['金额'].mean() if not night_philosophy_df.empty else 0
+    night_total = night_philosophy_df['金额'].sum()
+
+    # [周末人格]
+    expense_df['weekday'] = expense_df['交易时间'].dt.weekday  # 0=Mon, 6=Sun
+    weekday_df = expense_df[expense_df['weekday'] < 5]
+    weekend_df = expense_df[expense_df['weekday'] >= 5]
+
+    weekday_avg = weekday_df['金额'].mean() if not weekday_df.empty else 0
+    weekend_avg = weekend_df['金额'].mean() if not weekend_df.empty else 0
+
+    # [通胀感知]
+    # 找频率最高的商家
+    top_merchant = expense_df['交易对方'].value_counts().idxmax()
+    merchant_df = expense_df[expense_df['交易对方'] == top_merchant].sort_values('交易时间')
+
+    inflation_data = {'merchant': top_merchant, 'start_price': 0, 'end_price': 0, 'trend': 'stable'}
+    if len(merchant_df) > 5:
+        # 取前3笔和后3笔的平均值比较
+        start_price = merchant_df.head(3)['金额'].mean()
+        end_price = merchant_df.tail(3)['金额'].mean()
+        inflation_data['start_price'] = float(start_price)
+        inflation_data['end_price'] = float(end_price)
+        if end_price > start_price * 1.1:
+            inflation_data['trend'] = 'up'
+        elif end_price < start_price * 0.9:
+            inflation_data['trend'] = 'down'
+
+    # --- 新增 V2 (Rich Story) ---
+
+    # 1. 年度首单
+    first_tx = expense_df.sort_values('交易时间').iloc[0]
+
+    # 2. 剁手黄金时间 (小时)
+    peak_hour = expense_df['交易时间'].dt.hour.mode()[0]
+
+    # 3. 外卖之王
+    takeout_keywords = ['美团', '饿了么', '外卖', '肯德基', '麦当劳']
+    takeout_df = expense_df[expense_df['商品说明'].str.contains('|'.join(takeout_keywords), case=False, na=False) |
+                            expense_df['交易对方'].str.contains('|'.join(takeout_keywords), case=False, na=False)]
+    takeout_count = len(takeout_df)
+    takeout_amount = takeout_df['金额'].sum()
+
+    # 4. 消费季节
+    # 12-2 冬, 3-5 春, 6-8 夏, 9-11 秋
+    def get_season(month):
+        if month in [12, 1, 2]:
+            return 'Winter'
+        elif month in [3, 4, 5]:
+            return 'Spring'
+        elif month in [6, 7, 8]:
+            return 'Summer'
+        else:
+            return 'Autumn'
+
+    expense_df['season'] = expense_df['交易时间'].dt.month.apply(get_season)
+    season_result = expense_df.groupby('season')['金额'].sum()
+    if not season_result.empty:
+        top_season_en = season_result.idxmax()
+        season_map = {'Winter': '冬', 'Spring': '春', 'Summer': '夏', 'Autumn': '秋'}
+        top_season = season_map.get(top_season_en, '全年')
+    else:
+        top_season = '全年'
 
     return {
-        'total_expense': total_expense,
-        'transaction_count': transaction_count,
-        'avg_transaction': avg_transaction,
-        'top_merchant': {'name': top_merchant, 'amount': top_merchant_amount},
-        'top_category': {'name': top_category, 'amount': top_category_amount},
-        'busiest_month': {'month': busiest_month, 'count': busiest_month_count},
-        'max_transaction': {
-            'amount': float(max_transaction['金额']),
-            'merchant': max_transaction['交易对方'],
-            'date': max_transaction['交易时间'].strftime('%Y-%m-%d')
+        'max_day': {
+            'date': max_day.strftime('%Y年%m月%d日'),
+            'amount': float(max_day_amount)
+        },
+        'max_month': {
+            'month': str(max_month),
+            'amount': float(max_month_amount)
+        },
+        'latest_tx': {
+            'time': latest_tx['交易时间'].strftime('%H:%M'),
+            'merchant': latest_tx['交易对方'],
+            'amount': float(latest_tx['金额'])
+        },
+        'top_category': {
+            'name': top_cat,
+            'amount': float(top_cat_amount)
+        },
+        'summary': {
+            'total_days': int(total_days),
+            'tx_count': int(total_tx_count),
+            'total_amount': float(expense_df['金额'].sum())
+        },
+        'features': {
+            'coffee': {
+                'count': int(coffee_count),
+                'amount': float(coffee_total)
+            },
+            'night': {
+                'avg': float(night_avg),
+                'total': float(night_total),
+                'count': len(night_philosophy_df)
+            },
+            'weekend': {
+                'weekday_avg': float(weekday_avg),
+                'weekend_avg': float(weekend_avg)
+            },
+            'inflation': inflation_data,
+            'first_tx': {
+                'date': first_tx['交易时间'].strftime('%Y-%m-%d %H:%M'),
+                'merchant': first_tx['交易对方'],
+                'amount': float(first_tx['金额']),
+                'product': first_tx['商品说明']
+            },
+            'peak_hour': int(peak_hour),
+            'takeout': {
+                'count': int(takeout_count),
+                'amount': float(takeout_amount)
+            },
+            'top_season': top_season
         }
     }
 
