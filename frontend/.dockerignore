@@ -32,7 +32,7 @@ Thumbs.db
 # Docker
 Dockerfile
 .dockerignore
-nginx.conf
+# nginx.conf - 需要保留用于 Docker 构建
 
 # 环境变量
 .env
