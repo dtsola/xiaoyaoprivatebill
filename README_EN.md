@@ -7,6 +7,8 @@
 [![Vue](https://img.shields.io/badge/Vue-3.4+-brightgreen.svg)](https://vuejs.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 
+English | [简体中文](README.md)
+
 ---
 
 ## Introduction
