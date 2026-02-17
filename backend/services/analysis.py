@@ -343,31 +343,74 @@ def analyze_payment_methods(df):
 
 
 def generate_smart_tags(df):
-    """生成智能标签"""
+    """生成智能标签（消费画像）"""
     expense_df = df[df['收/支'] == '支出'].copy()
 
-    tags = []
+    result = {
+        'tags': [],
+        'time_pattern': '-',
+        'spending_preference': '-',
+        'spending_pattern': '-',
+        'spending_power': '-'
+    }
 
-    # 分析消费特征生成标签
+    # 计算总体消费情况
     total_expense = expense_df['金额'].sum()
+    avg_expense = expense_df['金额'].mean()
+    daily_expense = expense_df.groupby(expense_df['交易时间'].dt.date)['金额'].sum().mean()
 
-    # 大额消费标签
-    large_expense = expense_df[expense_df['金额'] >= 1000]['金额'].sum()
-    if (large_expense / total_expense) > 0.3:
-        tags.append({'name': '大额消费较多', 'type': 'warning'})
+    # 时间模式分析
+    hour_stats = expense_df.groupby(expense_df['交易时间'].dt.hour).size()
+    peak_hours = hour_stats[hour_stats > hour_stats.mean()].index.tolist()
 
-    # 线上消费偏好
-    online_keywords = ['淘宝', '天猫', '京东', '美团', '饿了么']
-    online_ratio = expense_df[expense_df['交易对方'].str.contains('|'.join(online_keywords), na=False)]['金额'].sum() / total_expense
-    if online_ratio > 0.5:
-        tags.append({'name': '线上消费为主', 'type': 'info'})
+    if 22 in peak_hours or 23 in peak_hours or 0 in peak_hours:
+        result['tags'].append('夜间消费达人')
+        result['time_pattern'] = '您偏好在夜间消费，要注意作息哦'
+    elif 6 in peak_hours or 7 in peak_hours:
+        result['tags'].append('早起达人')
+        result['time_pattern'] = '您是个早起消费的生活达人'
+    else:
+        result['time_pattern'] = '您的消费时间比较规律，集中在日间'
 
-    # 餐饮消费标签
-    food_ratio = expense_df[expense_df['交易分类'] == '餐饮美食']['金额'].sum() / total_expense
-    if food_ratio > 0.3:
-        tags.append({'name': '美食爱好者', 'type': 'success'})
+    # 消费偏好分析
+    category_ratio = expense_df.groupby('交易分类')['金额'].sum() / total_expense
+    top_categories = category_ratio[category_ratio > 0.15].index.tolist()
 
-    return tags
+    preference_desc = []
+    for category in top_categories:
+        result['tags'].append(f'{category}控')
+        preference_desc.append(f'{category}({(category_ratio[category]*100):.1f}%)')
+
+    if preference_desc:
+        result['spending_preference'] = f"最常消费的品类是{', '.join(preference_desc)}"
+    else:
+        result['spending_preference'] = '消费比较均衡'
+
+    # 消费规律分析
+    daily_expenses = expense_df.groupby(expense_df['交易时间'].dt.date)['金额'].sum()
+    cv = daily_expenses.std() / daily_expenses.mean()
+
+    if cv < 0.5:
+        result['tags'].append('消费稳健派')
+        result['spending_pattern'] = '您的消费非常有规律，是个理性消费者'
+    elif cv < 0.8:
+        result['tags'].append('平衡消费派')
+        result['spending_pattern'] = '您的消费较为均衡，适度有波动'
+    else:
+        result['tags'].append('随性消费派')
+        result['spending_pattern'] = '您的消费比较随性，波动较大'
+
+    # 消费能力分析
+    daily_avg = daily_expense if not pd.isna(daily_expense) else 0
+    if daily_avg < 50:
+        power_desc = f'日均消费{daily_avg:.0f}元，属于理性消费人群'
+    elif daily_avg < 100:
+        power_desc = f'日均消费{daily_avg:.0f}元，属于中等消费人群'
+    else:
+        power_desc = f'日均消费{daily_avg:.0f}元，属于高消费人群'
+    result['spending_power'] = power_desc
+
+    return result
 
 
 def generate_story_data(df):
