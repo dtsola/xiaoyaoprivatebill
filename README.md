@@ -25,12 +25,23 @@
 
 ## 作者介绍
 
-- **dtsola** 【IT解决方案架构师 | 一人公司实践者】
-- 🌐 网站：https://www.dtsola.com
-- 📺 B站：https://space.bilibili.com/736015
-- 💬 微信：dtsola（与我建联，备注：github）
+<p align="center">
+  <img src="docs/产品文档/产品截图/作者头像.jpg" alt="dtsola" width="120" height="120" style="border-radius: 50%;">
+</p>
 
-![dtsola](docs/产品文档/产品截图/个人二维码.png)
+<p align="center">
+  <b>dtsola</b> — IT解决方案架构师 | 一人公司实践者
+</p>
+
+<p align="center">
+  🌐 <a href="https://www.dtsola.com">个人站点</a> &nbsp;|&nbsp;
+  📺 <a href="https://space.bilibili.com/736015">B站</a> &nbsp;|&nbsp;
+  💬 微信：dtsola（与我建联，备注：github）
+</p>
+
+<p align="center">
+  <img src="docs/产品文档/产品截图/个人二维码.png" alt="微信二维码" width="150">
+</p>
 
 ---
 

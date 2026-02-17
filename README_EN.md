@@ -25,12 +25,23 @@ Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool
 
 ## Author
 
-- **dtsola** 【IT Solution Architect | Indie Solo Practitioner】
-- 🌐 Website: https://www.dtsola.com
-- 📺 Bilibili: https://space.bilibili.com/736015
-- 💬 WeChat: dtsola (Connect with me, note: github)
+<p align="center">
+  <img src="docs/产品文档/产品截图/作者头像.jpg" alt="dtsola" width="120" height="120" style="border-radius: 50%;">
+</p>
 
-![dtsola](docs/产品文档/产品截图/个人二维码.png)
+<p align="center">
+  <b>dtsola</b> — IT Solution Architect | Indie Solo Practitioner
+</p>
+
+<p align="center">
+  🌐 <a href="https://www.dtsola.com">Personal Site</a> &nbsp;|&nbsp;
+  📺 <a href="https://space.bilibili.com/736015">Bilibili</a> &nbsp;|&nbsp;
+  💬 WeChat: dtsola (Connect with me, note: github)
+</p>
+
+<p align="center">
+  <img src="docs/产品文档/产品截图/个人二维码.png" alt="WeChat QR Code" width="150">
+</p>
 
 ---
 
