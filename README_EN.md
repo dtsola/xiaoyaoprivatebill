@@ -69,9 +69,9 @@ Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool
 <td width="50%"><img src="docs/产品文档/产品截图/01-首页.png" alt="Homepage"></td>
 <td width="50%">
 <ul>
-<li>🎯 **All-in-One Bill Analysis Tool** - Supports Alipay and WeChat bills</li>
-<li>📊 **4 Feature Cards** - Multi-dimensional analysis, privacy protection, trend tracking, smart search</li>
-<li>🚀 **Quick Actions** - Upload bill files or view sample data</li>
+<li>🎯 All-in-One Bill Analysis Tool - Supports Alipay and WeChat bills</li>
+<li>📊 4 Feature Cards - Multi-dimensional analysis, privacy protection, trend tracking, smart search</li>
+<li>🚀 Quick Actions - Upload bill files or view sample data</li>
 </ul>
 </td>
 </tr>
