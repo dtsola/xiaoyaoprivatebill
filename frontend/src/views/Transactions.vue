@@ -1,173 +1,290 @@
 <template>
   <div class="transactions-page">
+    <!-- 页面标题 -->
     <div class="page-header">
       <h1 class="page-title">交易记录</h1>
     </div>
 
-    <!-- 筛选区域 -->
-    <div class="filter-bar">
-      <select v-model="filters.year" @change="loadTransactions" class="filter-select">
-        <option value="">全部年份</option>
-        <option v-for="year in dataStore.availableYears" :key="year" :value="year">
-          {{ year }}年
-        </option>
-      </select>
-
-      <select v-model="filters.category" @change="loadTransactions" class="filter-select">
-        <option value="">全部分类</option>
-        <option v-for="cat in dataStore.categories" :key="cat" :value="cat">
-          {{ cat }}
-        </option>
-      </select>
-
-      <select v-model="filters.type" @change="loadTransactions" class="filter-select">
-        <option value="">全部类型</option>
-        <option value="支出">支出</option>
-        <option value="收入">收入</option>
-      </select>
-
-      <input
-        v-model="filters.search"
-        type="text"
-        placeholder="搜索交易描述..."
-        class="filter-input"
-        @keyup.enter="loadTransactions"
-      />
-
-      <button class="btn btn-primary" @click="loadTransactions">
-        <i class="fas fa-search"></i>
-        搜索
-      </button>
-    </div>
-
-    <!-- 数据表格 -->
-    <div class="table-container">
-      <div v-if="uiStore.globalLoading" class="table-loading">
-        <div class="loading-spinner"></div>
-        <p>加载中...</p>
+    <!-- 卡片容器 -->
+    <div class="card">
+      <!-- 表格头部和筛选器 -->
+      <div class="table-header">
+        <h3>交易明细</h3>
+        <div class="table-filters">
+          <select v-model="filters.month" @change="onFilterChange" class="filter-select">
+            <option value="">全部时间</option>
+            <option v-for="month in availableMonths" :key="month" :value="month">
+              {{ month }}
+            </option>
+          </select>
+          <select v-model="filters.category" @change="onFilterChange" class="filter-select">
+            <option value="">全部分类</option>
+            <option v-for="cat in categories" :key="cat" :value="cat">
+              {{ cat }}
+            </option>
+          </select>
+          <select v-model="filters.type" @change="onFilterChange" class="filter-select">
+            <option value="">全部类型</option>
+            <option value="收入">收入</option>
+            <option value="支出">支出</option>
+          </select>
+          <input
+            v-model="filters.search"
+            type="text"
+            placeholder="搜索交易..."
+            class="filter-input"
+            @keyup.enter="onFilterChange"
+          />
+        </div>
       </div>
 
-      <div v-else-if="transactions.length === 0" class="empty-state">
-        <i class="fas fa-receipt empty-icon"></i>
-        <p>暂无交易记录</p>
+      <!-- 表格容器 -->
+      <div class="table-container">
+        <div v-if="uiStore.globalLoading" class="table-loading">
+          <div class="loading-spinner"></div>
+          <p>加载中...</p>
+        </div>
+
+        <div v-else-if="transactions.length === 0" class="empty-state">
+          <i class="fas fa-receipt empty-icon"></i>
+          <p>暂无交易记录</p>
+        </div>
+
+        <table v-else id="transactionTable" class="transaction-table">
+          <thead>
+            <tr>
+              <th>交易时间</th>
+              <th>商品说明</th>
+              <th>交易对方</th>
+              <th>分类</th>
+              <th>收/支</th>
+              <th>金额</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="tx in transactions" :key="tx.time + tx.description" class="table-row">
+              <td>{{ tx.time }}</td>
+              <td :title="tx.description">{{ tx.description }}</td>
+              <td :title="tx.counterparty || ''">{{ tx.counterparty || '-' }}</td>
+              <td>{{ tx.category }}</td>
+              <td>{{ tx.type }}</td>
+              <td :class="['amount', tx.type === '收入' ? 'income' : 'expense']">
+                {{ parseFloat(tx.amount).toFixed(2) }}
+              </td>
+              <td>
+                <span :class="['status-tag', tx.status === '交易成功' ? 'success' : 'refund']">
+                  {{ tx.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <table v-else class="data-table">
-        <thead>
-          <tr>
-            <th>交易时间</th>
-            <th>描述</th>
-            <th>分类</th>
-            <th>类型</th>
-            <th>金额</th>
-            <th>状态</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="tx in transactions" :key="tx.time + tx.description" class="table-row">
-            <td>{{ formatDateTime(tx.time, 'datetime') }}</td>
-            <td class="td-description">{{ tx.description }}</td>
-            <td>{{ tx.category }}</td>
-            <td>
-              <span :class="['type-badge', tx.type === '支出' ? 'expense' : 'income']">
-                {{ tx.type }}
-              </span>
-            </td>
-            <td :class="['td-amount', tx.type === '支出' ? 'expense' : 'income']">
-              {{ tx.type === '支出' ? '-' : '+' }}{{ formatMoney(tx.amount) }}
-            </td>
-            <td>{{ tx.status || '-' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 分页 -->
-    <div v-if="pagination.total_pages > 1" class="pagination">
-      <button
-        class="page-btn"
-        :disabled="pagination.current_page === 1"
-        @click="goToPage(pagination.current_page - 1)"
-      >
-        上一页
-      </button>
-      <span class="page-info">第 {{ pagination.current_page }} / {{ pagination.total_pages }} 页</span>
-      <button
-        class="page-btn"
-        :disabled="pagination.current_page === pagination.total_pages"
-        @click="goToPage(pagination.current_page + 1)"
-      >
-        下一页
-      </button>
+      <!-- 分页 -->
+      <div class="table-pagination">
+        <button
+          class="pagination-btn"
+          :disabled="pagination.current_page <= 1"
+          @click="goToPage(pagination.current_page - 1)"
+        >
+          上一页
+        </button>
+        <span id="pageInfo" class="page-info">
+          第 {{ pagination.current_page }} 页 / 共 {{ pagination.total_pages }} 页 ({{ pagination.total_records }} 条记录)
+        </span>
+        <button
+          class="pagination-btn"
+          :disabled="pagination.current_page >= pagination.total_pages"
+          @click="goToPage(pagination.current_page + 1)"
+        >
+          下一页
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { useDataStore } from '@/stores/data'
 import { useUiStore } from '@/stores/ui'
-import { formatMoney, formatDateTime } from '@/utils/format'
+import { useSessionStore } from '@/stores/session'
+import { useFilterStore } from '@/stores/filter'
+import api from '@/api/client'
 
 const dataStore = useDataStore()
 const uiStore = useUiStore()
+const sessionStore = useSessionStore()
+const filterStore = useFilterStore()
 
 const transactions = ref([])
+const availableMonths = ref([])
+const categories = ref([])
+
 const pagination = reactive({
   current_page: 1,
-  per_page: 50,
+  per_page: 20,
   total_pages: 1,
   total_records: 0
 })
 
 const filters = reactive({
-  year: '',
   month: '',
   category: '',
   type: '',
   search: ''
 })
 
+// 搜索防抖定时器
+let searchTimeout = null
+
+// 加载可用月份（从 available_dates API）
+async function loadAvailableMonths() {
+  try {
+    const data = await api.getAvailableDates()
+    console.log('[Transactions] Available months response:', data)
+
+    if (data.months && data.months.length > 0) {
+      availableMonths.value = data.months
+      console.log('[Transactions] Loaded months:', availableMonths.value)
+    } else {
+      console.warn('[Transactions] No months found')
+    }
+  } catch (error) {
+    console.error('[Transactions] 加载月份失败:', error)
+  }
+}
+
+// 加载分类
+async function loadCategories() {
+  try {
+    const data = await api.getCategories()
+    console.log('[Transactions] Categories response:', data)
+
+    // API 客户端会移除 success 字段，直接返回 { categories: [...] }
+    if (data.categories && data.categories.length > 0) {
+      categories.value = data.categories
+      console.log('[Transactions] Loaded categories:', categories.value)
+    } else {
+      console.warn('[Transactions] No categories found')
+    }
+  } catch (error) {
+    console.error('[Transactions] 加载分类失败:', error)
+  }
+}
+
+// 解析月份筛选器值
+function parseMonthFilter(monthValue) {
+  if (!monthValue) return { year: '', month: '' }
+
+  const parts = monthValue.split('-')
+  if (parts.length === 2) {
+    return { year: parts[0], month: parts[1] }
+  }
+  return { year: '', month: '' }
+}
+
+// 加载交易记录
 async function loadTransactions() {
   try {
     uiStore.setGlobalLoading(true)
+
+    const { year, month } = parseMonthFilter(filters.month)
+
+    // 构建参数，需要转换类型
     const params = {
       page: pagination.current_page,
-      per_page: pagination.per_page,
-      ...filters
+      per_page: pagination.per_page
     }
-    const result = await dataStore.loadTransactions(params)
-    transactions.value = result.transactions || []
-    pagination.current_page = result.pagination?.current_page || 1
-    pagination.total_pages = result.pagination?.total_pages || 1
-    pagination.total_records = result.pagination?.total_records || 0
+
+    // 只有当值存在时才添加参数
+    if (year) params.year = parseInt(year)
+    if (month) params.month = parseInt(month)
+    if (filters.category) params.category = filters.category
+    if (filters.type) params.type = filters.type
+    if (filters.search) params.search = filters.search
+
+    // 添加金额筛选参数
+    const filterParams = filterStore.getFilterParams()
+    Object.assign(params, filterParams)
+
+    console.log('[Transactions] Loading with params:', params)
+
+    const data = await api.getTransactions(params)
+
+    console.log('[Transactions] Received data:', data)
+
+    transactions.value = data.transactions || []
+    pagination.current_page = data.pagination?.current_page || 1
+    pagination.total_pages = data.pagination?.total_pages || 1
+    pagination.total_records = data.pagination?.total_records || 0
+
+    console.log('[Transactions] Loaded', transactions.value.length, 'transactions')
   } catch (error) {
+    console.error('[Transactions] Error:', error)
     uiStore.showError('加载交易记录失败: ' + error.message)
   } finally {
     uiStore.setGlobalLoading(false)
   }
 }
 
-function goToPage(page) {
-  pagination.current_page = page
+// 筛选器变化时重新加载（重置到第一页）
+function onFilterChange() {
+  pagination.current_page = 1
   loadTransactions()
 }
 
+// 跳转到指定页码
+function goToPage(page) {
+  if (page >= 1 && page <= pagination.total_pages) {
+    pagination.current_page = page
+    loadTransactions()
+  }
+}
+
+// 初始化
 onMounted(async () => {
-  await dataStore.loadAvailableYears()
-  await dataStore.loadCategories()
+  console.log('[Transactions] Component mounted')
+
+  await loadAvailableMonths()
+  await loadCategories()
   await loadTransactions()
+
+  console.log('[Transactions] Initial load complete')
+})
+
+// 监听全局筛选器变化
+watch(() => filterStore.currentFilter, (newFilter, oldFilter) => {
+  console.log('[Transactions] Filter changed from', oldFilter, 'to', newFilter)
+  // 重置到第一页并重新加载数据
+  pagination.current_page = 1
+  loadTransactions()
 })
 </script>
 
 <style scoped>
 .transactions-page {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
+/* 页面标题 */
 .page-header {
-  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--bg-color);
+  margin: -20px -20px 24px -20px;
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(245, 245, 247, 0.8);
 }
 
 .page-title {
@@ -177,65 +294,195 @@ onMounted(async () => {
   margin: 0;
 }
 
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 16px;
+/* 卡片容器 */
+.card {
   background: var(--card-bg);
-  border-radius: var(--radius-md);
-  margin-bottom: 20px;
+  border-radius: var(--radius-lg);
+  padding: 20px;
   box-shadow: var(--shadow-card);
+}
+
+/* 表格头部 */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 0;
+}
+
+/* 筛选器 */
+.table-filters {
+  display: flex;
+  gap: 12px;
 }
 
 .filter-select,
 .filter-input {
-  padding: 8px 12px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: var(--card-bg);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--hover-bg);
   color: var(--text-color);
-  font-size: 14px;
+  font-size: 13px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
 }
 
 .filter-select {
-  min-width: 120px;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: pointer;
+  /* 移除原生下拉箭头 */
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .filter-input {
-  flex: 1;
-  min-width: 200px;
+  width: 200px;
 }
 
-.btn {
+.filter-select:hover,
+.filter-input:hover {
+  background-color: var(--border-color);
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  background-color: white;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* 表格容器 */
+.table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: white;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.transaction-table th {
+  background: var(--bg-color);
+  color: var(--secondary-text);
+  font-weight: normal;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.transaction-table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.transaction-table tbody tr:hover {
+  background: var(--hover-bg);
+}
+
+/* 限制商品说明列宽 */
+.transaction-table td:nth-child(2) {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 限制交易对方列宽 */
+.transaction-table td:nth-child(3) {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 金额样式 */
+.amount {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace;
+  text-align: right;
+}
+
+.amount.income {
+  color: #34C759;
+}
+
+.amount.expense {
+  color: #FF3B30;
+}
+
+/* 状态标签 */
+.status-tag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.btn-primary {
+.status-tag.success {
+  background: #E4FBE6;
+  color: #34C759;
+}
+
+.status-tag.refund {
+  background: #FFE5E5;
+  color: #FF3B30;
+}
+
+/* 分页 */
+.table-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  gap: 16px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--hover-bg);
+  color: var(--text-color);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pagination-btn:not(:disabled):hover {
   background: var(--primary-color);
   color: white;
 }
 
-.btn-primary:hover {
-  background: #0066E6;
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
-.table-container {
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
+.page-info {
+  font-size: 13px;
+  color: var(--secondary-text);
 }
 
+/* 加载和空状态 */
 .table-loading,
 .empty-state {
   display: flex;
@@ -264,106 +511,5 @@ onMounted(async () => {
   font-size: 48px;
   margin-bottom: 16px;
   opacity: 0.5;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.data-table th {
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
-  color: var(--secondary-text);
-  font-size: 13px;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-color);
-}
-
-.data-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 14px;
-  color: var(--text-color);
-}
-
-.table-row:hover {
-  background: var(--hover-bg);
-}
-
-.td-description {
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.type-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.type-badge.expense {
-  background: rgba(255, 59, 48, 0.1);
-  color: var(--danger-color);
-}
-
-.type-badge.income {
-  background: rgba(52, 199, 89, 0.1);
-  color: var(--success-color);
-}
-
-.td-amount {
-  font-weight: 600;
-  font-family: var(--font-family-mono);
-}
-
-.td-amount.expense {
-  color: var(--danger-color);
-}
-
-.td-amount.income {
-  color: var(--success-color);
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 16px;
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  margin-top: 20px;
-  box-shadow: var(--shadow-card);
-}
-
-.page-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: var(--card-bg);
-  color: var(--text-color);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.page-btn:hover:not(:disabled) {
-  background: var(--hover-bg);
-  border-color: var(--primary-color);
-}
-
-.page-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.page-info {
-  font-size: 14px;
-  color: var(--secondary-text);
 }
 </style>

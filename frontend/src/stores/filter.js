@@ -65,15 +65,15 @@ export const useFilterStore = defineStore('filter', () => {
    * @returns {Object} 筛选参数
    */
   function getFilterParams() {
-    switch (currentFilter.value) {
-      case FilterType.LARGE:
-        return { min_amount: 1000 }
-      case FilterType.SMALL:
-        return { max_amount: 1000 }
-      case FilterType.ALL:
-      default:
-        return {}
+    console.log('[Filter] Getting filter params for:', currentFilter.value)
+    const params = {
+      [FilterType.LARGE]: { min_amount: 1000 },
+      [FilterType.SMALL]: { max_amount: 1000 },
+      [FilterType.ALL]: {}
     }
+    const result = params[currentFilter.value] || {}
+    console.log('[Filter] Returning filter params:', result)
+    return result
   }
 
   /**
