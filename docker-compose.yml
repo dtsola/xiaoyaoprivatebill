@@ -1,5 +1,5 @@
 # Docker Compose 配置
-# 用于一键启动小遥私人账单分析助手
+# 用于一键启动小遥账单助手
 
 version: '3.8'
 
@@ -12,7 +12,7 @@ services:
     container_name: xiaoyao-backend
     restart: unless-stopped
     environment:
-      - APP_NAME=小遥私人账单分析助手
+      - APP_NAME=小遥账单助手
       - APP_ENV=production
       - DEBUG=False
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}

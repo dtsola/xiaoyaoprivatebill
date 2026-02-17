@@ -65,7 +65,7 @@
         <div class="project-section">
           <h2 class="section-title">关于本项目</h2>
           <p class="project-description">
-            小遥私人账单分析助手是一个<strong>隐私优先</strong>的个人账单分析工具，
+            小遥账单助手是一个<strong>隐私优先</strong>的个人账单分析工具，
             数据完全本地处理，不上传任何服务器。支持支付宝和微信账单的自动解析和多维度数据可视化分析。
           </p>
           <div class="project-links">
