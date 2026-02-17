@@ -46,7 +46,7 @@ dmypy.json
 .palywright-mcp
 
 # 测试文件目录
-olds
+
 
 # 发布版应用
 release/

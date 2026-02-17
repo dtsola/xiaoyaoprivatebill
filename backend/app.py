@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for, send_from_directory
+from flask import Flask, jsonify, request, session, redirect, url_for, send_from_directory
 import pandas as pd
 from datetime import datetime, timedelta
 from functools import lru_cache, wraps
@@ -55,22 +55,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
-
-# 添加静态文件版本号控制
-@app.context_processor
-def inject_static_version():
-    """注入静态文件版本号，用于清除缓存"""
-    try:
-        # 获取 style.css 的最后修改时间作为版本号
-        css_path = os.path.join(app.root_path, 'static', 'css', 'style.css')
-        if os.path.exists(css_path):
-            version = str(int(os.path.getmtime(css_path)))
-        else:
-            version = datetime.now().strftime('%Y%m%d%H%M')
-    except Exception:
-        version = datetime.now().strftime('%Y%m%d%H%M')
-    
-    return dict(STATIC_VERSION=version)
 
 # 添加文件上传配置
 UPLOAD_FOLDER = '/tmp/flask_uploads'  # PythonAnywhere 推荐的临时目录
@@ -156,7 +140,7 @@ def load_alipay_data():
     try:
         # 演示模式逻辑
         if session.get('is_demo'):
-            sample_file = os.path.join(app.static_folder, 'sample_data.csv')
+            sample_file = os.path.join(os.path.dirname(__file__), 'data', 'sample_data.csv')
             if not os.path.exists(sample_file):
                 raise FileNotFoundError("示例数据文件不存在")
             
@@ -352,92 +336,59 @@ def validate_dataframe(df):
         raise ValueError("'金额'列必须是数值类型")
 
 def check_data_exists(f):
+    """
+    数据检查装饰器（简化版）
+    新前端会自行处理无数据的情况
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         # 演示模式直接通过
         if session.get('is_demo'):
             return f(*args, **kwargs)
 
-        # 如果是 settings 页面，不需要检查数据
-        if request.endpoint == 'settings':
-            return f(*args, **kwargs)
-            
-        if 'user_id' not in session:
-            return redirect(url_for('settings'))
-            
-        session_dir = get_session_dir()
-        has_data = False
-        if os.path.exists(session_dir):
-            for filename in os.listdir(session_dir):
-                if filename.endswith('.csv') or filename.endswith('.xlsx'):
-                    has_data = True
-                    break
-        
-        if not has_data:
-            return redirect(url_for('settings'))
+        # 其他情况直接执行，让 API 返回相应错误
         return f(*args, **kwargs)
     return decorated_function
 
 @app.route('/')
 @app.route('/index')
 def index():
-    # 检查是否启用新前端模式
-    if os.environ.get('NEW_FRONTEND') == '1':
-        frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
-        if os.path.exists(frontend_dist):
-            return send_from_directory(frontend_dist, 'index.html')
-    # 否则使用原有模板
-    return render_template('index.html', active_page='index')
+    """服务新前端"""
+    frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
+    if os.path.exists(frontend_dist):
+        return send_from_directory(frontend_dist, 'index.html')
+    # 如果前端未构建，返回提示
+    return jsonify({
+        'error': '前端未构建，请先运行: cd frontend && npm run build'
+    }), 503
 
 
-# 新前端静态资源服务 (仅在新前端模式下生效)
-# 注意: 此路由需要在所有 API 路由之前注册
-def register_new_frontend_routes(app):
-    """注册新前端相关的路由"""
-    @app.route('/assets/<path:filename>')
-    def serve_new_frontend_assets(filename):
-        if os.environ.get('NEW_FRONTEND') == '1':
-            frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
-            assets_dir = os.path.join(frontend_dist, 'assets')
-            if os.path.exists(assets_dir):
-                return send_from_directory(assets_dir, filename)
-        # 如果不是新前端模式，返回 404
-        return None, 404
-
+# 新前端路由 - 处理 SPA 路由
 @app.route('/yearly')
-@check_data_exists
-def yearly():
-    return render_template('yearly.html', active_page='yearly')
-
 @app.route('/monthly')
-@check_data_exists
-def monthly():
-    return render_template('monthly.html', active_page='monthly')
-
 @app.route('/category')
-@check_data_exists
-def category():
-    return render_template('category.html', active_page='category')
-
 @app.route('/time')
-@check_data_exists
-def time():
-    return render_template('time.html', active_page='time')
-
 @app.route('/transactions')
-@check_data_exists
-def transactions():
-    return render_template('transactions.html', active_page='transactions')
-
 @app.route('/insights')
-@check_data_exists
-def insights():
-    return render_template('insights.html', active_page='insights')
+@app.route('/settings')
+def serve_frontend_routes():
+    """服务新前端 - SPA 路由支持"""
+    frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
+    if os.path.exists(frontend_dist):
+        return send_from_directory(frontend_dist, 'index.html')
+    return jsonify({'error': '前端未构建'}), 503
 
-@app.route('/analysis')
-@check_data_exists
-def analysis():
-    return render_template('analysis.html', active_page='analysis')
+
+# 新前端静态资源路由
+@app.route('/assets/<path:filename>')
+def serve_frontend_assets(filename):
+    """服务新前端静态资源"""
+    frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
+    assets_dir = os.path.join(frontend_dist, 'assets')
+    if os.path.exists(os.path.join(assets_dir, filename)):
+        return send_from_directory(assets_dir, filename)
+    return jsonify({'error': '资源未找到'}), 404
+
 
 @app.route('/api/analysis')
 def get_analysis():
@@ -1893,10 +1844,14 @@ def exit_demo_mode():
 
 @app.route('/settings')
 def settings():
-    # 访问设置页面时确保会话已初始化
-    # 这可以防止并发上传文件时产生多个不同的会话ID
+    """设置页面 - 服务新前端并确保会话已初始化"""
+    # 确保会话已初始化（用于文件上传）
     get_session_dir()
-    return render_template('settings.html', active_page='settings')
+    # 返回新前端
+    frontend_dist = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist')
+    if os.path.exists(frontend_dist):
+        return send_from_directory(frontend_dist, 'index.html')
+    return jsonify({'error': '前端未构建'}), 503
 
 @app.route('/api/upload', methods=['POST'])
 def upload_file():
