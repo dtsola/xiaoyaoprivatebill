@@ -23,13 +23,142 @@ Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool
 
 ---
 
+## Author
+
+- **dtsola** 【IT Solution Architect | Indie Solo Practitioner】
+- 🌐 Website: https://www.dtsola.com
+- 📺 Bilibili: https://space.bilibili.com/736015
+- 💬 WeChat: dtsola (Connect with me, note: github)
+
+![dtsola](docs/产品文档/产品截图/个人二维码.png)
+
+---
+
 ## Feature Preview
 
-| Yearly Analysis | Monthly Analysis | Category Analysis | Time Analysis |
-|-----------------|------------------|-------------------|---------------|
-| Yearly income/expense summary | Monthly trends | Category breakdown | Spending patterns |
-| Yearly story review | Monthly comparison | Category ranking | Peak hours analysis |
-| Yearly trend charts | Monthly calendar view | Category details | Habit insights |
+### Upload Bills - One-Click Import
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/08-上传账单.png" alt="Upload Bills"></td>
+<td width="50%">
+<ul>
+<li>📤 Drag & drop bill upload</li>
+<li>📋 Auto-detect Alipay/WeChat bill format</li>
+<li>⚡ Fast parsing, one-click analysis report</li>
+</ul>
+</td>
+</tr>
+</table>
+
+### Homepage - Feature Dashboard
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/01-首页.png" alt="Homepage"></td>
+<td width="50%">
+<ul>
+<li>🎯 **All-in-One Bill Analysis Tool** - Supports Alipay and WeChat bills</li>
+<li>📊 **4 Feature Cards** - Multi-dimensional analysis, privacy protection, trend tracking, smart search</li>
+<li>🚀 **Quick Actions** - Upload bill files or view sample data</li>
+</ul>
+</td>
+</tr>
+</table>
+
+### Yearly Overview - At a Glance
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/02-年度总览.png" alt="Yearly Overview"></td>
+<td width="50%">
+<ul>
+<li>📊 Yearly income/expense summary</li>
+<li>📈 Yearly trend charts</li>
+<li>📖 Yearly story review</li>
+</ul>
+</td>
+</tr>
+</table>
+
+### Monthly Analysis - Detailed Comparison
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/03-月度分析.png" alt="Monthly Analysis"></td>
+<td width="50%">
+<ul>
+<li>📅 Monthly trends & comparison</li>
+<li>🗓️ Monthly calendar view</li>
+<li>📉 Month-over-month analysis</li>
+</ul>
+</td>
+</tr>
+</table>
+
+### Category Analysis - Spending Breakdown
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/04-分类分析.png" alt="Category Analysis"></td>
+<td width="50%">
+<ul>
+<li>🏷️ Category breakdown & distribution</li>
+<li>📊 Category ranking & statistics</li>
+<li>📝 Category transaction details</li>
+</ul>
+</td>
+</tr>
+</table>
+
+### Time Analysis - Spending Patterns
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/05-时间分析.png" alt="Time Analysis"></td>
+<td width="50%">
+<ul>
+<li>⏰ Spending time distribution</li>
+<li>🌡️ Peak hours heatmap</li>
+<li>📈 Consumption habit insights</li>
+</ul>
+</td>
+</tr>
+</table>
+
+### Consumption Insights - Smart Analytics
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/06-消费洞察-01.png" alt="Consumption Insights 1"></td>
+<td width="50%"><img src="docs/产品文档/产品截图/06-消费洞察-02.png" alt="Consumption Insights 2"></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/06-消费洞察-03.png" alt="Consumption Insights 3"></td>
+<td width="50%">
+<ul>
+<li>💡 Spending habit analysis</li>
+<li>🔍 Anomaly alerts</li>
+<li>📊 Personalized recommendations</li>
+</ul>
+</td>
+</tr>
+</table>
+
+### Transaction Records - Detailed History
+
+<table>
+<tr>
+<td width="50%"><img src="docs/产品文档/产品截图/07-交易记录.png" alt="Transaction Records"></td>
+<td width="50%">
+<ul>
+<li>📋 Complete transaction history</li>
+<li>🔍 Multi-dimensional filtering</li>
+<li>📤 Export support for further analysis</li>
+</ul>
+</td>
+</tr>
+</table>
 
 ---
 

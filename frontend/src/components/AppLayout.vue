@@ -48,6 +48,10 @@
           <i class="fas fa-cog icon-settings"></i>
           <span>设置</span>
         </router-link>
+        <router-link to="/about-author" class="nav-item" :class="{ active: $route.path === '/about-author' }">
+          <i class="fas fa-user-circle icon-author"></i>
+          <span>关于作者</span>
+        </router-link>
       </nav>
     </aside>
 
@@ -218,6 +222,7 @@ onMounted(async () => {
 .icon-insights { color: #FFCC00; }
 .icon-transactions { color: #30B0C7; }
 .icon-settings { color: #8E8E93; }
+.icon-author { color: #FF2D55; }
 
 .content {
   flex: 1;
