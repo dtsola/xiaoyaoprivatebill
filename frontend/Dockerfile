@@ -3,6 +3,9 @@
 # 阶段1：构建阶段
 FROM node:18-alpine AS builder
 
+# 配置阿里云 Alpine 镜像源（备将来安装系统包使用）
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+
 # 设置工作目录
 WORKDIR /app
 
@@ -21,6 +24,9 @@ RUN npm run build
 
 # 阶段2：生产阶段 - 使用 Nginx 服务静态文件
 FROM nginx:alpine
+
+# 配置阿里云 Alpine 镜像源（备将来安装系统包使用）
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 # 从构建阶段复制构建产物
 COPY --from=builder /app/dist /usr/share/nginx/html
