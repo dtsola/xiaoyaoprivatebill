@@ -13,7 +13,7 @@
     <aside class="sidebar">
       <div class="logo">
         <img src="/images/logo_128.png" alt="小遥账单助手" class="logo-icon" />
-        <span>账单分析</span>
+        <span>小遥账单</span>
       </div>
       <nav class="nav-menu">
         <router-link to="/" class="nav-item" :class="{ active: $route.path === '/' }">

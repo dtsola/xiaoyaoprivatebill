@@ -1,6 +1,6 @@
 <template>
   <div class="welcome-section">
-    <h1 class="welcome-title">全能账单分析工具</h1>
+    <h1 class="welcome-title">小遥账单助手</h1>
     <p class="welcome-subtitle">
       支持支付宝和微信账单的一站式分析，获取详细的消费洞察。<br />
       所有数据分析均在本地进行，保护您的隐私安全。
