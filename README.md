@@ -51,13 +51,15 @@
 </p>
 
 <p align="center">
-  <img src="docs/产品文档/产品截图/个人二维码.png" alt="微信二维码" width="150">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/运营文档/开发者交流群图.png" alt="开发者交流群" width="150">
+  <img src="docs/产品文档/产品截图/个人二维码.png" alt="微信二维码" width="120">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/运营文档/开发者交流群图.png" alt="开发者交流群" width="120">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/运营文档/用户交流群图.png" alt="用户交流群" width="120">
 </p>
 
 <p align="center">
-  <small>微信联系 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 开发者交流群</small>
+  <small>微信联系 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 开发者交流群 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 用户交流群</small>
 </p>
 
 ---

@@ -75,6 +75,16 @@
               />
               <p class="qrcode-hint">开发者交流群</p>
             </div>
+            <div class="qrcode-divider"></div>
+            <div class="qrcode-item">
+              <img
+                src="/images/用户交流群.png"
+                alt="用户交流群"
+                class="qrcode-image clickable"
+                @click="openPreview('/images/用户交流群.png', '用户交流群')"
+              />
+              <p class="qrcode-hint">用户交流群</p>
+            </div>
           </div>
         </div>
 
@@ -307,7 +317,7 @@ const closePreview = () => {
 }
 
 .qrcode-image {
-  width: 180px;
+  width: 150px;
   height: auto;
   aspect-ratio: 1;
   object-fit: contain;
@@ -414,13 +424,23 @@ const closePreview = () => {
   }
 
   .qrcode-container {
-    flex-direction: column;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .qrcode-item {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 140px;
+  }
+
+  .qrcode-image {
+    width: 140px;
   }
 
   .qrcode-divider {
     display: none;
   }
+
 
   .project-links {
     flex-direction: column;
