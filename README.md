@@ -52,6 +52,12 @@
 
 <p align="center">
   <img src="docs/产品文档/产品截图/个人二维码.png" alt="微信二维码" width="150">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/运营文档/开发者交流群图.png" alt="开发者交流群" width="150">
+</p>
+
+<p align="center">
+  <small>微信联系 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 开发者交流群</small>
 </p>
 
 ---

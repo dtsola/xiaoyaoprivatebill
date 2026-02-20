@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开发者交流群 - 小遥账单助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .logo {
+            width: 128px;
+            height: 128px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .qrcode-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .qrcode-container img {
+            width: 280px;
+            height: 280px;
+            display: block;
+        }
+
+        .tip {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .tip strong {
+            color: #667eea;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .qrcode-container img {
+                width: 180px;
+                height: 180px;
+            }
+
+            .features {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../产品文档/logos/A2.png" alt="小遥AI">
+        </div>
+
+        <h1>小遥AI-Vibe Coding 开发者交流群</h1>
+        <p class="subtitle">
+            践行 Vibe Coding，共建小遥AI 生态<br>
+            产品发布 · AI编程 · 技术交流（开发者专属）
+        </p>
+
+        <div class="qrcode-container">
+            <img src="二维码/开发者群二维码.png" alt="开发者交流群二维码">
+        </div>
+
+        <div class="tip">
+            <strong>扫码加群</strong> 或添加微信 <code>dtsola</code>（备注：github）
+        </div>
+    </div>
+</body>
+</html>
