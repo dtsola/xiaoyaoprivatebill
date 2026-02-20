@@ -54,10 +54,27 @@
 
         <!-- 二维码展示 -->
         <div class="qrcode-section">
-          <h2 class="section-title">微信二维码</h2>
+          <h2 class="section-title">扫码联系</h2>
           <div class="qrcode-container">
-            <img src="/images/个人二维码.png" alt="微信二维码" class="qrcode-image" />
-            <p class="qrcode-hint">扫描二维码添加微信</p>
+            <div class="qrcode-item">
+              <img
+                src="/images/个人二维码.png"
+                alt="微信二维码"
+                class="qrcode-image clickable"
+                @click="openPreview('/images/个人二维码.png', '微信联系')"
+              />
+              <p class="qrcode-hint">微信联系</p>
+            </div>
+            <div class="qrcode-divider"></div>
+            <div class="qrcode-item">
+              <img
+                src="/images/开发者交流群.png"
+                alt="开发者交流群"
+                class="qrcode-image clickable"
+                @click="openPreview('/images/开发者交流群.png', '开发者交流群')"
+              />
+              <p class="qrcode-hint">开发者交流群</p>
+            </div>
           </div>
         </div>
 
@@ -77,11 +94,43 @@
         </div>
       </div>
     </div>
+
+    <!-- 图片预览模态框 -->
+    <Transition name="fade">
+      <div v-if="previewVisible" class="preview-modal" @click="closePreview">
+        <div class="preview-content" @click.stop>
+          <button class="preview-close" @click="closePreview">
+            <i class="fas fa-times"></i>
+          </button>
+          <img :src="previewImage" :alt="previewTitle" class="preview-image" />
+          <p class="preview-title">{{ previewTitle }}</p>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script setup>
-// 关于作者页面 - 静态内容，无需额外逻辑
+import { ref } from 'vue'
+
+// 预览状态
+const previewVisible = ref(false)
+const previewImage = ref('')
+const previewTitle = ref('')
+
+// 打开预览
+const openPreview = (src, title) => {
+  previewImage.value = src
+  previewTitle.value = title
+  previewVisible.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+// 关闭预览
+const closePreview = () => {
+  previewVisible.value = false
+  document.body.style.overflow = ''
+}
 </script>
 
 <style scoped>
@@ -234,18 +283,47 @@
 }
 
 .qrcode-container {
-  text-align: center;
-  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 32px 24px;
   background: var(--bg-color);
   border-radius: var(--radius-md);
 }
 
+.qrcode-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.qrcode-divider {
+  width: 1px;
+  height: 160px;
+  background: var(--border-color);
+}
+
 .qrcode-image {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
   border-radius: var(--radius-md);
   margin-bottom: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.qrcode-image.clickable {
+  cursor: pointer;
+}
+
+.qrcode-image.clickable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .qrcode-hint {
@@ -331,8 +409,17 @@
   }
 
   .qrcode-image {
-    width: 180px;
-    height: 180px;
+    width: 160px;
+    height: auto;
+  }
+
+  .qrcode-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .qrcode-divider {
+    display: none;
   }
 
   .project-links {
@@ -342,5 +429,88 @@
   .project-link {
     justify-content: center;
   }
+
+  .preview-content {
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  .preview-image {
+    max-width: 90vw;
+    max-height: 70vh;
+  }
+}
+
+/* 图片预览模态框 */
+.preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.preview-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 80vw;
+  max-height: 90vh;
+}
+
+.preview-close {
+  position: absolute;
+  top: -50px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.preview-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.preview-image {
+  max-width: 80vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.preview-title {
+  margin-top: 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* 淡入淡出动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
