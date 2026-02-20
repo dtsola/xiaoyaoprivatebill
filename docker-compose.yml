@@ -15,10 +15,6 @@ services:
       - APP_NAME=小遥账单助手
       - APP_ENV=production
       - DEBUG=False
-      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
-      - SESSION_LIFETIME=1800
-      - MAX_CONTENT_LENGTH=16777216
-      - UPLOAD_FOLDER=/app/data
     volumes:
       - backend-data:/app/data
     networks:

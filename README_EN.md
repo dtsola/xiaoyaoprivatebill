@@ -25,7 +25,7 @@ Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool
 
 **Key Features**:
 - 🔒 **Privacy First** - All data is processed locally, nothing is uploaded to any server
-- ⏰ **Auto-Destroy** - Bill data automatically deleted after 90 minutes, no manual cleanup needed
+- 🔐 **Manual Clear** - Manually clear bill data anytime, have full control of your financial privacy
 - 📊 **Multi-dimensional Analysis** - Yearly, monthly, category, time, and consumption insights
 - 📁 **Multiple Format Support** - Alipay CSV, WeChat CSV/XLSX bill files
 - 🚀 **Quick Deployment** - One-click Docker setup, ready to use

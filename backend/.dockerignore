@@ -29,6 +29,7 @@ ENV/
 
 # 日志
 *.log
+*.old
 
 # 系统文件
 .DS_Store

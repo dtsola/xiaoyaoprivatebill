@@ -46,7 +46,9 @@ dmypy.json
 .palywright-mcp
 
 # 测试文件目录
-
+*.old
+upload/
+flask_sessions/
 
 # 发布版应用
 release/

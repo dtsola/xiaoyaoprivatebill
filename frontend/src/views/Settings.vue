@@ -1,12 +1,8 @@
 <template>
   <div class="settings-page">
-    <!-- 页面标题和会话计时器 -->
+    <!-- 页面标题 -->
     <div class="page-header">
       <h1 class="page-title">文件管理</h1>
-      <div class="session-timer">
-        <i class="fas fa-clock"></i>
-        <span>会话剩余时间: <span id="timeRemaining">{{ timeRemaining }}</span></span>
-      </div>
     </div>
 
     <!-- 双栏布局：支付宝和微信 -->
@@ -163,13 +159,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
 import { useSessionStore } from '@/stores/session'
 import { useUiStore } from '@/stores/ui'
 import api from '@/api/client'
 
-const router = useRouter()
 const sessionStore = useSessionStore()
 const uiStore = useUiStore()
 
@@ -185,10 +179,6 @@ const wechatDragging = ref(false)
 const alipayInput = ref(null)
 const wechatInput = ref(null)
 
-// 会话计时器
-const timeRemaining = ref('--:--')
-let timerInterval = null
-
 // 总文件数
 const totalFileCount = computed(() => alipayFiles.value.length + wechatFiles.value.length)
 
@@ -197,13 +187,6 @@ const MAX_FILE_SIZE = 16 * 1024 * 1024
 
 onMounted(async () => {
   await loadFiles()
-  startTimer()
-})
-
-onUnmounted(() => {
-  if (timerInterval) {
-    clearInterval(timerInterval)
-  }
 })
 
 // 加载已上传文件
@@ -234,8 +217,8 @@ async function loadFiles() {
     })
 
     // 排序文件列表
-    sortFileList(alipayFiles)
-    sortFileList(wechatFiles)
+    sortFileList(alipayFiles.value)
+    sortFileList(wechatFiles.value)
   } catch (error) {
     console.error('[Settings] 加载文件列表失败:', error)
   }
@@ -336,10 +319,10 @@ async function handleFiles(files, allowedExt, provider) {
       const newFile = { name: result.filename || file.name, source: provider }
       if (provider === 'wechat') {
         wechatFiles.value.push(newFile)
-        sortFileList(wechatFiles)
+        sortFileList(wechatFiles.value)
       } else {
         alipayFiles.value.push(newFile)
-        sortFileList(alipayFiles)
+        sortFileList(alipayFiles.value)
       }
 
       uiStore.showSuccess('文件上传成功')
@@ -378,48 +361,10 @@ async function handleClearAllData() {
       alipayFiles.value = []
       wechatFiles.value = []
 
-      // 重置计时器
-      timeRemaining.value = '--:--'
-
       uiStore.showSuccess('所有数据已清除')
     } catch (error) {
       uiStore.showError('清除失败: ' + error.message)
     }
-  }
-}
-
-// 开始计时器
-function startTimer() {
-  updateTimer()
-  timerInterval = setInterval(updateTimer, 1000)
-}
-
-// 更新计时器
-async function updateTimer() {
-  try {
-    const data = await api.getTimeRemaining()
-
-    // 如果会话还未开始（没有上传文件）
-    if (!data.hasOwnProperty('remaining')) {
-      timeRemaining.value = '--:--'
-      return
-    }
-
-    const remaining = data.remaining
-    if (remaining <= 0 || data.expired) {
-      timeRemaining.value = '已过期'
-      // 如果有文件则重定向到首页
-      if (totalFileCount.value > 0) {
-        router.push('/')
-      }
-      return
-    }
-
-    const minutes = Math.floor(remaining / 60)
-    const seconds = remaining % 60
-    timeRemaining.value = `${minutes}:${seconds.toString().padStart(2, '0')}`
-  } catch (error) {
-    console.error('[Settings] 更新计时器失败:', error)
   }
 }
 </script>
@@ -444,21 +389,6 @@ async function updateTimer() {
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
-}
-
-.session-timer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  color: var(--secondary-text);
-  font-size: 14px;
-}
-
-.session-timer i {
-  color: var(--primary-color);
 }
 
 /* 双栏布局 */
@@ -802,10 +732,6 @@ async function updateTimer() {
     flex-direction: column;
     gap: 12px;
     align-items: flex-start;
-  }
-
-  .session-timer {
-    align-self: flex-start;
   }
 }
 </style>

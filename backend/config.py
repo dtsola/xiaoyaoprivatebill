@@ -6,19 +6,16 @@ from datetime import timedelta
 
 # ============ 目录配置 ============
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = '/tmp/flask_uploads'  # PythonAnywhere 推荐的临时目录
-SESSION_FILE_DIR = os.path.join(UPLOAD_FOLDER, '..', 'flask_sessions')
 DATA_DIR = os.path.join(BASE_DIR, 'data')
+UPLOAD_FOLDER = os.path.join(DATA_DIR, 'upload')
+SESSION_FILE_DIR = os.path.join(DATA_DIR, 'flask_sessions')
 
 # ============ 文件上传配置 ============
 ALLOWED_EXTENSIONS = {'csv', 'xlsx'}
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
 
 # ============ 会话配置 ============
-SESSION_LIFETIME_MINUTES = 90
-SESSION_LIFETIME = timedelta(minutes=SESSION_LIFETIME_MINUTES)
-CACHE_LIFETIME_SECONDS = 3600  # 60分钟缓存
-ORPHAN_FILE_CLEANUP_HOURS = 24  # 24小时后清理孤儿文件
+# 本地部署不需要会话过期和自动清理
 
 # ============ Flask Session 配置 ============
 SESSION_COOKIE_SECURE = False  # 本地开发环境设为 False

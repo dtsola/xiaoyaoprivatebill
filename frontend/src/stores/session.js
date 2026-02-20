@@ -11,7 +11,6 @@ export const useSessionStore = defineStore('session', () => {
 
   // 状态
   const isDemo = ref(savedDemoMode)
-  const timeRemaining = ref(null)
   const uploadedFiles = ref([])
   const isLoading = ref(false)
   const sessionActive = ref(false)
@@ -24,10 +23,6 @@ export const useSessionStore = defineStore('session', () => {
 
   // 计算属性
   const hasData = computed(() => uploadedFiles.value.length > 0)
-  const sessionExpired = computed(() => {
-    if (!timeRemaining.value) return false
-    return timeRemaining.value <= 0
-  })
 
   // ==================== 演示模式 ====================
 
@@ -183,31 +178,15 @@ export const useSessionStore = defineStore('session', () => {
     }
   }
 
-  /**
-   * 加载剩余时间
-   */
-  async function loadTimeRemaining() {
-    try {
-      const remaining = await api.getTimeRemaining()
-      timeRemaining.value = remaining
-      return remaining
-    } catch (error) {
-      console.error('加载剩余时间失败:', error)
-      return null
-    }
-  }
-
   return {
     // 状态
     isDemo,
     sessionActive,
-    timeRemaining,
     uploadedFiles,
     isLoading,
 
     // 计算属性
     hasData,
-    sessionExpired,
 
     // 方法
     enterDemoMode,
@@ -216,7 +195,6 @@ export const useSessionStore = defineStore('session', () => {
     loadUploadedFiles,
     deleteFile,
     clearAllData,
-    loadSessionStatus,
-    loadTimeRemaining
+    loadSessionStatus
   }
 })

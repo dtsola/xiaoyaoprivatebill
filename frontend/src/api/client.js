@@ -118,12 +118,7 @@ export const api = {
   /**
    * 获取会话状态 (特殊处理 - 后端返回格式不同)
    */
-  getSessionStatus: () => getSessionStatus(),
-
-  /**
-   * 获取会话剩余时间
-   */
-  getTimeRemaining: () => get('/session/time_remaining')
+  getSessionStatus: () => getSessionStatus()
 }
 
 // ==================== 请求封装函数 ====================

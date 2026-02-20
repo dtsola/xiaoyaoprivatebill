@@ -18,7 +18,6 @@ from config import (
     UPLOAD_FOLDER,
     SESSION_FILE_DIR,
     MAX_CONTENT_LENGTH,
-    SESSION_LIFETIME,
     SESSION_COOKIE_SECURE,
     SESSION_COOKIE_HTTPONLY,
     SESSION_COOKIE_SAMESITE,
@@ -36,8 +35,6 @@ from config import (
 # ============ 导入工具函数 ============
 from utils.session import (
     get_session_dir,
-    cleanup_orphan_files,
-    start_cleanup_thread,
     ensure_upload_dir,
 )
 
@@ -52,7 +49,6 @@ app.config.update(
     SESSION_COOKIE_SECURE=SESSION_COOKIE_SECURE,
     SESSION_COOKIE_HTTPONLY=SESSION_COOKIE_HTTPONLY,
     SESSION_COOKIE_SAMESITE=SESSION_COOKIE_SAMESITE,
-    PERMANENT_SESSION_LIFETIME=SESSION_LIFETIME,
     SESSION_TYPE=SESSION_TYPE,
     SESSION_FILE_DIR=SESSION_FILE_DIR,
     SESSION_FILE_THRESHOLD=SESSION_FILE_THRESHOLD,
@@ -99,8 +95,6 @@ register_new_frontend_routes()
 
 # ============ 启动时初始化 ============
 ensure_upload_dir()
-cleanup_orphan_files()
-start_cleanup_thread()
 
 # ============ 前端路由 ============
 
