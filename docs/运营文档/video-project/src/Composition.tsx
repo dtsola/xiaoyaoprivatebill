@@ -1,4 +1,5 @@
-import { AbsoluteFill, useCurrentFrame } from "remotion";
+import { AbsoluteFill, useCurrentFrame, staticFile } from "remotion";
+import { Audio } from "@remotion/media";
 import { ProblemScene } from "./scenes/ProblemScene";
 import { SolutionScene } from "./scenes/SolutionScene";
 import { DemoScene } from "./scenes/DemoScene";
@@ -15,6 +16,9 @@ import insight1Screenshot from "./screenshots/insight.png";
 import insight2Screenshot from "./screenshots/insight2.png";
 import insight3Screenshot from "./screenshots/insight3.png";
 import recordsScreenshot from "./screenshots/records.png";
+
+// 配音文件
+const voiceover = staticFile("audio/voiceover.mp3");
 
 // 场景时间轴（帧数 @ 30fps，总时长 120秒 = 3600帧）
 const SCENE1_END = 300; // 0-10s: 问题引入
@@ -37,6 +41,9 @@ export const XiaoyaoBillPromo = () => {
 
   return (
     <AbsoluteFill>
+      {/* 配音 */}
+      <Audio src={voiceover} />
+
       {/* 场景1：问题引入 (0-10s) */}
       {frame < SCENE1_END && <ProblemScene />}
 
