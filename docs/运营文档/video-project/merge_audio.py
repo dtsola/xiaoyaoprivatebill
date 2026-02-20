@@ -7,20 +7,20 @@
 import os
 import subprocess
 
-# 音频文件列表（按顺序）
+# 音频文件列表（按顺序）- 优化后的时间轴
 AUDIO_FILES = [
     ("scene1_problem.mp3", 0),        # 0s
-    ("scene2_solution.mp3", 10),       # 10s
-    ("scene3a_upload.mp3", 25),       # 25s
-    ("scene3b_home.mp3", 33),        # 33s
-    ("scene3c_overview.mp3", 41),     # 41s
-    ("scene3d_monthly.mp3", 49),     # 49s
-    ("scene3e_category.mp3", 57),     # 57s
-    ("scene3f_time.mp3", 65),        # 65s
-    ("scene3ghi_insight.mp3", 73),    # 73s
-    ("scene3j_records.mp3", 97),     # 97s
-    ("scene4_privacy.mp3", 105),     # 105s
-    ("scene5_cta.mp3", 115),        # 115s
+    ("scene2_solution.mp3", 9),        # 9s
+    ("scene3a_upload.mp3", 22),       # 22s
+    ("scene3b_home.mp3", 31),        # 31s
+    ("scene3c_overview.mp3", 39),     # 39s
+    ("scene3d_monthly.mp3", 45),     # 45s
+    ("scene3e_category.mp3", 51),     # 51s
+    ("scene3f_time.mp3", 57),        # 57s
+    ("scene3ghi_insight.mp3", 62),    # 62s
+    ("scene3j_records.mp3", 70),     # 70s
+    ("scene4_privacy.mp3", 74),     # 74s
+    ("scene5_cta.mp3", 80),        # 80s
 ]
 
 # 输出文件
@@ -44,8 +44,8 @@ def merge_audio_with_pydub():
     print("正在使用 pydub 合并音频...")
     print("-" * 60)
 
-    # 创建一个 120 秒的静音音频作为基础
-    total_duration = 120  # 秒
+    # 创建一个 90 秒的静音音频作为基础
+    total_duration = 90  # 秒
     combined = AudioSegment.silent(duration=total_duration * 1000)
 
     for filename, delay_seconds in AUDIO_FILES:

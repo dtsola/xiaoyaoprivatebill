@@ -3,6 +3,7 @@ import { Audio } from "@remotion/media";
 import { ProblemScene } from "./scenes/ProblemScene";
 import { SolutionScene } from "./scenes/SolutionScene";
 import { DemoScene } from "./scenes/DemoScene";
+import { InsightCarouselScene } from "./scenes/InsightCarouselScene";
 import { CallToActionScene } from "./scenes/CallToActionScene";
 import { PrivacyScene } from "./scenes/PrivacyScene";
 
@@ -20,21 +21,20 @@ import recordsScreenshot from "./screenshots/records.png";
 // 配音文件
 const voiceover = staticFile("audio/voiceover.mp3");
 
-// 场景时间轴（帧数 @ 30fps，总时长 120秒 = 3600帧）
-const SCENE1_END = 300; // 0-10s: 问题引入
-const SCENE2_END = 750; // 10-25s: 解决方案
-const SCENE3A_END = 990; // 25-33s: 上传账单
-const SCENE3B_END = 1230; // 33-41s: 首页
-const SCENE3C_END = 1470; // 41-49s: 年度总览
-const SCENE3D_END = 1710; // 49-57s: 月度分析
-const SCENE3E_END = 1950; // 57-65s: 分类分析
-const SCENE3F_END = 2190; // 65-73s: 时间分析
-const SCENE3G_END = 2430; // 73-81s: 消费洞察1
-const SCENE3H_END = 2670; // 81-89s: 消费洞察2
-const SCENE3I_END = 2910; // 89-97s: 消费洞察3
-const SCENE3J_END = 3150; // 97-105s: 交易记录
-const SCENE4_END = 3450; // 105-115s: 隐私说明
-const SCENE5_END = 3600; // 115-120s: 邀请试用
+// 场景时间轴（帧数 @ 30fps，总时长 90秒 = 2700帧）
+// 基于实际配音时长优化，每个场景增加1-2秒过渡
+const SCENE1_END = 270;   // 0-9s: 问题引入 (配音 8s)
+const SCENE2_END = 660;   // 9-22s: 解决方案 (配音 11.7s)
+const SCENE3A_END = 930;  // 22-31s: 上传账单 (配音 8.5s)
+const SCENE3B_END = 1170; // 31-39s: 首页 (配音 6.3s)
+const SCENE3C_END = 1350; // 39-45s: 年度总览 (配音 4.2s)
+const SCENE3D_END = 1530; // 45-51s: 月度分析 (配音 3.5s)
+const SCENE3E_END = 1710; // 51-57s: 分类分析 (配音 3.8s)
+const SCENE3F_END = 1860; // 57-62s: 时间分析 (配音 3.5s)
+const SCENE3G_END = 2100; // 62-70s: 消费洞察 (配音 7.1s)
+const SCENE3H_END = 2220; // 70-74s: 交易记录 (配音 3.6s)
+const SCENE4_END = 2400;  // 74-80s: 隐私说明 (配音 5.3s)
+const SCENE5_END = 2700;  // 80-90s: 邀请试用 (配音 6.8s)
 
 export const XiaoyaoBillPromo = () => {
   const frame = useCurrentFrame();
@@ -44,13 +44,13 @@ export const XiaoyaoBillPromo = () => {
       {/* 配音 */}
       <Audio src={voiceover} />
 
-      {/* 场景1：问题引入 (0-10s) */}
+      {/* 场景1：问题引入 (0-9s) */}
       {frame < SCENE1_END && <ProblemScene />}
 
-      {/* 场景2：解决方案 (10-25s) */}
+      {/* 场景2：解决方案 (9-22s) */}
       {frame >= SCENE1_END && frame < SCENE2_END && <SolutionScene />}
 
-      {/* 场景3A：上传账单 (25-33s) */}
+      {/* 场景3A：上传账单 (22-31s) */}
       {frame >= SCENE2_END && frame < SCENE3A_END && (
         <DemoScene
           image={uploadScreenshot}
@@ -59,7 +59,7 @@ export const XiaoyaoBillPromo = () => {
         />
       )}
 
-      {/* 场景3B：首页 (33-41s) */}
+      {/* 场景3B：首页 (31-39s) */}
       {frame >= SCENE3A_END && frame < SCENE3B_END && (
         <DemoScene
           image={homeScreenshot}
@@ -68,7 +68,7 @@ export const XiaoyaoBillPromo = () => {
         />
       )}
 
-      {/* 场景3C：年度总览 (41-49s) */}
+      {/* 场景3C：年度总览 (39-45s) */}
       {frame >= SCENE3B_END && frame < SCENE3C_END && (
         <DemoScene
           image={overviewScreenshot}
@@ -77,7 +77,7 @@ export const XiaoyaoBillPromo = () => {
         />
       )}
 
-      {/* 场景3D：月度分析 (49-57s) */}
+      {/* 场景3D：月度分析 (45-51s) */}
       {frame >= SCENE3C_END && frame < SCENE3D_END && (
         <DemoScene
           image={monthlyScreenshot}
@@ -86,7 +86,7 @@ export const XiaoyaoBillPromo = () => {
         />
       )}
 
-      {/* 场景3E：分类分析 (57-65s) */}
+      {/* 场景3E：分类分析 (51-57s) */}
       {frame >= SCENE3D_END && frame < SCENE3E_END && (
         <DemoScene
           image={categoryScreenshot}
@@ -95,7 +95,7 @@ export const XiaoyaoBillPromo = () => {
         />
       )}
 
-      {/* 场景3F：时间分析 (65-73s) */}
+      {/* 场景3F：时间分析 (57-62s) */}
       {frame >= SCENE3E_END && frame < SCENE3F_END && (
         <DemoScene
           image={timeScreenshot}
@@ -104,35 +104,16 @@ export const XiaoyaoBillPromo = () => {
         />
       )}
 
-      {/* 场景3G：消费洞察1 (73-81s) */}
+      {/* 场景3G：消费洞察轮播 (62-70s) - 3张截图轮播 */}
       {frame >= SCENE3F_END && frame < SCENE3G_END && (
-        <DemoScene
-          image={insight1Screenshot}
-          title="消费洞察"
-          subtitle="高频商户分析"
+        <InsightCarouselScene
+          images={[insight1Screenshot, insight2Screenshot, insight3Screenshot]}
+          relativeFrame={frame - SCENE3F_END}
         />
       )}
 
-      {/* 场景3H：消费洞察2 (81-89s) */}
+      {/* 场景3H：交易记录 (70-74s) */}
       {frame >= SCENE3G_END && frame < SCENE3H_END && (
-        <DemoScene
-          image={insight2Screenshot}
-          title="消费洞察"
-          subtitle="大额消费提醒"
-        />
-      )}
-
-      {/* 场景3I：消费洞察3 (89-97s) */}
-      {frame >= SCENE3H_END && frame < SCENE3I_END && (
-        <DemoScene
-          image={insight3Screenshot}
-          title="消费洞察"
-          subtitle="消费建议与优化"
-        />
-      )}
-
-      {/* 场景3J：交易记录 (97-105s) */}
-      {frame >= SCENE3I_END && frame < SCENE3J_END && (
         <DemoScene
           image={recordsScreenshot}
           title="交易记录"
@@ -140,10 +121,10 @@ export const XiaoyaoBillPromo = () => {
         />
       )}
 
-      {/* 场景4：隐私说明 (105-115s) */}
-      {frame >= SCENE3J_END && frame < SCENE4_END && <PrivacyScene />}
+      {/* 场景4：隐私说明 (74-80s) */}
+      {frame >= SCENE3H_END && frame < SCENE4_END && <PrivacyScene />}
 
-      {/* 场景5：邀请试用 (115-120s) */}
+      {/* 场景5：邀请试用 (80-90s) */}
       {frame >= SCENE4_END && <CallToActionScene />}
     </AbsoluteFill>
   );
