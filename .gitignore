@@ -49,6 +49,7 @@ dmypy.json
 *.old
 upload/
 flask_sessions/
+*.mp4
 
 # 发布版应用
 release/
