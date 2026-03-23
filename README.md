@@ -47,7 +47,7 @@
 <p align="center">
   🌐 <a href="https://www.dtsola.com">个人站点</a> &nbsp;|&nbsp;
   📺 <a href="https://space.bilibili.com/736015">B站</a> &nbsp;|&nbsp;
-  💬 微信：dtsola（与我建联，备注：github）
+  💬 微信：dtsola（技术交流 | 商务合作）
 </p>
 
 <p align="center">

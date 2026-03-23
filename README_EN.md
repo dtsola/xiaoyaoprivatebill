@@ -47,7 +47,7 @@ Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool
 <p align="center">
   🌐 <a href="https://www.dtsola.com">Personal Site</a> &nbsp;|&nbsp;
   📺 <a href="https://space.bilibili.com/736015">Bilibili</a> &nbsp;|&nbsp;
-  💬 WeChat: dtsola (Connect with me, note: github)
+  💬 WeChat: dtsola (Tech Exchange | Business Cooperation)
 </p>
 
 <p align="center">
