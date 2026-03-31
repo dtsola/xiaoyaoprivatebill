@@ -90,7 +90,7 @@ def parse_wechat_xlsx(filepath):
     """
     try:
         # 微信账单通常头部有16行说明，第17行是标题
-        df = pd.read_excel(filepath, header=16, engine='openpyxl')
+        df = pd.read_excel(filepath, header=17, engine='openpyxl')
 
         # 检查是否是有效的微信账单（检查关键列）
         if '交易时间' not in df.columns or '金额(元)' not in df.columns:
