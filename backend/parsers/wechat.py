@@ -89,18 +89,35 @@ def parse_wechat_xlsx(filepath):
         Exception: 解析失败时抛出异常
     """
     try:
-        # 微信账单通常头部有16行说明，第17行是标题
-        df = pd.read_excel(filepath, header=16, engine='openpyxl')
+        # 动态查找表头位置
+        df_raw = pd.read_excel(filepath, header=None, engine='openpyxl')
+        header_row = None
+
+        # 查找包含关键列的行
+        for i, row in df_raw.iterrows():
+            row_str = ' '.join([str(cell) for cell in row if pd.notna(cell)])
+            if '交易时间' in row_str and ('交易类型' in row_str or '金额' in row_str):
+                header_row = i
+                break
+
+        if header_row is None:
+            raise ValueError("无法找到微信账单表头行，请确认文件格式正确")
+
+        # 使用找到的表头行重新读取
+        df = pd.read_excel(filepath, header=header_row, engine='openpyxl')
 
         # 检查是否是有效的微信账单（检查关键列）
-        if '交易时间' not in df.columns or '金额(元)' not in df.columns:
+        if '交易时间' not in df.columns:
             raise ValueError("不是有效的微信账单文件")
 
         # 映射列名以匹配支付宝格式
+        # 处理不同的金额列名格式
+        if '金额(元)' in df.columns and '金额' not in df.columns:
+            df = df.rename(columns={'金额(元)': '金额'})
+
         df = df.rename(columns={
             '交易类型': '交易分类',
             '商品': '商品说明',
-            '金额(元)': '金额',
             '当前状态': '交易状态',
             '支付方式': '收/付款方式'
         })
