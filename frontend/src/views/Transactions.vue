@@ -38,6 +38,24 @@
         </div>
       </div>
 
+      <!-- 总金额汇总 -->
+      <div class="table-summary">
+        <div class="summary-item">
+          <span class="summary-label">总收入</span>
+          <span class="summary-value income">¥{{ summary.total_income.toFixed(2) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">总支出</span>
+          <span class="summary-value expense">¥{{ summary.total_expense.toFixed(2) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">结余</span>
+          <span class="summary-value" :class="summary.balance >= 0 ? 'income' : 'expense'">
+            ¥{{ summary.balance.toFixed(2) }}
+          </span>
+        </div>
+      </div>
+
       <!-- 表格容器 -->
       <div class="table-container">
         <div v-if="uiStore.globalLoading" class="table-loading">
@@ -130,6 +148,12 @@ const pagination = reactive({
   total_records: 0
 })
 
+const summary = reactive({
+  total_income: 0,
+  total_expense: 0,
+  balance: 0
+})
+
 const filters = reactive({
   month: '',
   category: '',
@@ -217,6 +241,9 @@ async function loadTransactions() {
     console.log('[Transactions] Received data:', data)
 
     transactions.value = data.transactions || []
+    summary.total_income = data.summary?.total_income || 0
+    summary.total_expense = data.summary?.total_expense || 0
+    summary.balance = data.summary?.balance || 0
     pagination.current_page = data.pagination?.current_page || 1
     pagination.total_pages = data.pagination?.total_pages || 1
     pagination.total_records = data.pagination?.total_records || 0
@@ -315,6 +342,41 @@ watch(() => filterStore.currentFilter, (newFilter, oldFilter) => {
   font-weight: 500;
   color: var(--text-color);
   margin: 0;
+}
+
+/* 总金额汇总 */
+.table-summary {
+  display: flex;
+  gap: 24px;
+  padding: 12px 16px;
+  background: var(--bg-color);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: var(--secondary-text);
+}
+
+.summary-value {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Mono', monospace;
+}
+
+.summary-value.income {
+  color: #34C759;
+}
+
+.summary-value.expense {
+  color: #FF3B30;
 }
 
 /* 筛选器 */

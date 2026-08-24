@@ -1016,6 +1016,11 @@ def get_transactions():
         df = df[~df['是否退款']]
         df = df.sort_values('交易时间', ascending=False)
 
+        # 计算总金额统计
+        total_income = df[df['收/支'] == '收入']['金额'].sum()
+        total_expense = df[df['收/支'] == '支出']['金额'].sum()
+        total_balance = total_income - total_expense
+
         total_records = len(df)
         total_pages = (total_records + per_page - 1) // per_page
         page = max(1, min(page, total_pages))
@@ -1040,6 +1045,11 @@ def get_transactions():
         return jsonify({
             'success': True,
             'transactions': transactions,
+            'summary': {
+                'total_income': float(total_income),
+                'total_expense': float(total_expense),
+                'balance': float(total_balance)
+            },
             'pagination': {
                 'current_page': page,
                 'per_page': per_page,
