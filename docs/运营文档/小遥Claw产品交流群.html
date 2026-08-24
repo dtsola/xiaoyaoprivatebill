@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小遥Claw · 交流和反馈群</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(180deg, #eef7fe 0%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(30, 144, 255, 0.18);
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .logo {
+            width: 128px;
+            height: 128px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: 27px;
+            color: #1E90FF;
+            margin-bottom: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e6f3fd;
+            color: #1E90FF;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+        }
+
+        .qrcode-container {
+            background: linear-gradient(135deg, #f0f9ff 0%, #dcedfd 100%);
+            border-radius: 20px;
+            padding: 26px;
+            margin: 0 auto 18px;
+            display: inline-block;
+        }
+
+        .qrcode-container img {
+            width: 280px;
+            height: 280px;
+            display: block;
+        }
+
+        .qrcode-caption {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1E90FF;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .fallback {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .fallback code {
+            background: #e6f3fd;
+            color: #1E90FF;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .qrcode-container img {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../产品文档/logos/xiaoyaoclaw-logo.png" alt="小遥Claw"
+                 onerror="this.src='../产品文档/logos/xiaoyaoclaw-logo-full.png'">
+        </div>
+
+        <h1>小遥Claw · 交流和反馈群</h1>
+        <p class="subtitle">
+            产品反馈 · 养虾资料 · 使用交流 · 功能建议<br>
+            <span class="badge">用户专属</span>
+        </p>
+
+        <div class="qrcode-container">
+            <img src="二维码/小遥Claw产品交流群.png" alt="小遥Claw交流和反馈群二维码">
+        </div>
+        <div class="qrcode-caption">—— 扫 码 进 群 ——</div>
+
+        <p class="fallback">群满可添加微信 <code>dtsola</code>（备注：小遥Claw）</p>
+    </div>
+</body>
+</html>
