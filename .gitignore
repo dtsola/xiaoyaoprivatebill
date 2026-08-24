@@ -42,8 +42,8 @@ coverage/
 dmypy.json
 .pytest_cache/
 
-# palywright
-.palywright-mcp
+# playwright
+.playwright-mcp/
 
 # 测试文件目录
 *.old
