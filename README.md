@@ -1,5 +1,9 @@
 # 小遥账单助手
 
+> **推荐使用桌面版：** 完全离线、原生桌面、内置 MCP，可直接用小遥Claw 分析账单。
+>
+> [GitHub 仓库](https://github.com/dtsola/xiaoyaoprivatebill-desktop) · [产品官网](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
+
 > 隐私优先的个人账单分析工具，数据完全本地处理，不上传任何服务器
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -13,10 +17,6 @@
 <p align="center">
   <img src="docs/产品文档/产品截图/宣传海报图.png" alt="小遥账单助手宣传海报">
 </p>
-
-> **推荐使用桌面版：** 完全离线、原生桌面、内置 MCP，可直接用小遥Claw 分析账单。
->
-> [GitHub 仓库](https://github.com/dtsola/xiaoyaoprivatebill-desktop) · [产品官网](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 
 ---
 

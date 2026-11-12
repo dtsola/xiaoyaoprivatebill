@@ -1,5 +1,9 @@
 # Xiaoyao Private Bill Analyzer
 
+> **Desktop edition recommended:** fully offline, native desktop, built-in MCP, and works with XiaoyaoClaw.
+>
+> [GitHub repository](https://github.com/dtsola/xiaoyaoprivatebill-desktop) · [Product website](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
+
 > Privacy-first personal bill analysis tool. All data is processed locally, nothing is uploaded to any server.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -13,10 +17,6 @@ English | [简体中文](README.md)
 <p align="center">
   <img src="docs/产品文档/产品截图/宣传海报图.png" alt="Xiaoyao Bill Assistant Poster">
 </p>
-
-> **Desktop edition recommended:** fully offline, native desktop, built-in MCP, and works with XiaoyaoClaw.
->
-> [GitHub repository](https://github.com/dtsola/xiaoyaoprivatebill-desktop) · [Product website](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 
 ---
 
