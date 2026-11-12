@@ -6,12 +6,17 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Vue](https://img.shields.io/badge/Vue-3.4+-brightgreen.svg)](https://vuejs.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Desktop](https://img.shields.io/badge/Desktop-Windows%20%7C%20macOS-2F80ED.svg)](https://github.com/dtsola/xiaoyaoprivatebill-desktop)
 
 [English](README_EN.md) | 简体中文
 
 <p align="center">
   <img src="docs/产品文档/产品截图/宣传海报图.png" alt="小遥账单助手宣传海报">
 </p>
+
+> **推荐使用桌面版：** 完全离线、原生桌面、内置 MCP，可直接用小遥Claw 分析账单。
+>
+> [GitHub 仓库](https://github.com/dtsola/xiaoyaoprivatebill-desktop) · [产品官网](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 
 ---
 
@@ -31,6 +36,21 @@
 - 🚀 **快速部署** - Docker 一键启动，开箱即用
 - 💻 **前后端分离** - Vue 3 + Flask 架构，易于维护扩展
 - 📱 **响应式设计** - 支持桌面端和移动端访问
+
+---
+
+## 桌面版
+
+小遥账单桌面版与 Web 版同源，视觉与统计口径一致；后端由 Rust 全量重写，采用 Tauri 打包，为 Windows / macOS 原生应用。
+
+- 🔒 **完全离线** - 不发起任何出站请求，无遥测、无 CDN
+- 🖥️ **桌面原生** - 系统托盘、单实例、窗口状态记忆、原生文件导入
+- 🤖 **内置 MCP** - 14 个工具，可被 小遥Claw 直接调用，一句话分析账单
+
+**Web 版已冻结，仅修复安全问题；新功能只进入桌面版。**
+
+- [桌面版 GitHub 仓库](https://github.com/dtsola/xiaoyaoprivatebill-desktop)
+- [产品官网](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 
 ---
 
@@ -446,6 +466,10 @@ A: 不会。所有数据处理完全在本地进行，不上传任何服务器�
 
 A: 支持。前端采用响应式设计，可在手机浏览器上正常使用。
 
+### Q: Web 版还会更新吗？
+
+A: Web 版已冻结，仅修复安全问题；新功能、桌面原生体验与 MCP 能力只进入[桌面版](https://github.com/dtsola/xiaoyaoprivatebill-desktop)。
+
 ### Q: 如何修改默认端口？
 
 A:
@@ -464,6 +488,8 @@ A:
 ## 联系方式
 
 - 项目主页: [GitHub](https://github.com/dtsola/xiaoyaoprivatebill)
+- 桌面版: [xiaoyaoprivatebill-desktop](https://github.com/dtsola/xiaoyaoprivatebill-desktop)
+- 产品官网: [xiaoyaosai.com/xiaoyaoprivatebill-desktop](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 - 问题反馈: [Issues](https://github.com/dtsola/xiaoyaoprivatebill/issues)
 
 ---

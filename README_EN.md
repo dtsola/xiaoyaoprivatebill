@@ -6,12 +6,17 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Vue](https://img.shields.io/badge/Vue-3.4+-brightgreen.svg)](https://vuejs.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Desktop](https://img.shields.io/badge/Desktop-Windows%20%7C%20macOS-2F80ED.svg)](https://github.com/dtsola/xiaoyaoprivatebill-desktop)
 
 English | [简体中文](README.md)
 
 <p align="center">
   <img src="docs/产品文档/产品截图/宣传海报图.png" alt="Xiaoyao Bill Assistant Poster">
 </p>
+
+> **Desktop edition recommended:** fully offline, native desktop, built-in MCP, and works with XiaoyaoClaw.
+>
+> [GitHub repository](https://github.com/dtsola/xiaoyaoprivatebill-desktop) · [Product website](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 
 ---
 
@@ -31,6 +36,21 @@ Xiaoyao Private Bill Analyzer is a **privacy-first** personal bill analysis tool
 - 🚀 **Quick Deployment** - One-click Docker setup, ready to use
 - 💻 **Frontend-Backend Separation** - Vue 3 + Flask architecture, easy to maintain and extend
 - 📱 **Responsive Design** - Supports desktop and mobile access
+
+---
+
+## Desktop Edition
+
+Xiaoyao Private Bill Analyzer – Desktop shares the same visuals and statistical definitions as the Web edition. Its backend is fully rewritten in Rust and packaged with Tauri as a native Windows / macOS app.
+
+- 🔒 **Fully offline** – no outbound requests, telemetry, CDN, or auto-update
+- 🖥️ **Desktop-native** – system tray, single instance, window-state memory, native file import
+- 🤖 **Built-in MCP** – 14 tools that XiaoyaoClaw can call to analyze bills in natural language
+
+**The Web edition is frozen and receives security fixes only; new features ship in the desktop edition.**
+
+- [Desktop GitHub repository](https://github.com/dtsola/xiaoyaoprivatebill-desktop)
+- [Product website](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 
 ---
 
@@ -446,6 +466,10 @@ A: No. All data processing is done entirely locally, nothing is uploaded to any 
 
 A: Yes. The frontend uses responsive design and works normally on mobile browsers.
 
+### Q: Will the Web edition keep receiving updates?
+
+A: The Web edition is frozen and receives security fixes only. New features, the native desktop experience, and MCP support ship in the [desktop edition](https://github.com/dtsola/xiaoyaoprivatebill-desktop).
+
 ### Q: How to change default ports?
 
 A:
@@ -464,6 +488,8 @@ This project is licensed under the [MIT License](LICENSE)
 ## Contact
 
 - Project Homepage: [GitHub](https://github.com/dtsola/xiaoyaoprivatebill)
+- Desktop edition: [xiaoyaoprivatebill-desktop](https://github.com/dtsola/xiaoyaoprivatebill-desktop)
+- Product website: [xiaoyaosai.com/xiaoyaoprivatebill-desktop](https://www.xiaoyaosai.com/xiaoyaoprivatebill-desktop/)
 - Issue Tracker: [Issues](https://github.com/dtsola/xiaoyaoprivatebill/issues)
 
 ---
